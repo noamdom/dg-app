@@ -227,10 +227,10 @@ class EnvironmentalImpactSerializer(serializers.ModelSerializer):
 #         return IngOfRecipeSerializer(ings, many=True)
 
 #
-# class RecipeNamesSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Recipe
-#         fields = ('id', 'name')
-#         extra_kwargs = {
-#             'name': {'read_only': True}
-#         }
+class RecipeNamesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MetaRecipe
+        fields = ('id', 'name')
+        extra_kwargs = {
+            'name': {'read_only': True}
+        }

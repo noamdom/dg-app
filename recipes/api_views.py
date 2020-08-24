@@ -49,7 +49,7 @@ class AromaList(ListAPIView):
 #         #     raise ValidationError({"name: A required field "})
 #
 #
-# class RecipeNameView(ListAPIView):
-#     queryset = MetaRecipe.objects.all().values('id', 'name')
-#     serializer_class = RecipeNamesSerializer
-#
+class RecipeNameView(ListAPIView):
+    queryset = MetaRecipe.objects.all().values('id', 'name')
+    serializer_class = RecipeNamesSerializer
+

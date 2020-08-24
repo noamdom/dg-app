@@ -25,7 +25,7 @@ urlpatterns = [
     # path('api/recipes/new/', recipes.api_views.RecipeCreate.as_view()),
     path('api/aromas/', recipes.api_views.AromaList.as_view()),
     path('api/aromas/<int:entity_id>/', recipes.api_views.AromaList.as_view()),
-    # path('api/recipesnames/', recipes.api_views.RecipeNameView.as_view()),
+    path('api/recipesnames/', recipes.api_views.RecipeNameView.as_view()),
     # path('api/eRecipe/', views.RecipeIngsView.as_view({'get': 'list'})),
     path('', include(router.urls))
 ]
