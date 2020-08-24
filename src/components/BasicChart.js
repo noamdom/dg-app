@@ -10,9 +10,6 @@ const LineByData = (props) => {
 
     const chart = () => {
 
-        console.log("env chart");
-
-        
         let datasetLand = []
         // save data set
         datasetLand = [ {

@@ -3,7 +3,12 @@ import RadarChart from '../components/RadaerByData.js'
 import LineChart from '../components/BasicChart.js'
 import AmountSlider from '../components/AmountsSlider.js'
 import ServiceApi from "../services/ServiceApi.js";
+import { Button, Collapse, Card } from 'react-bootstrap';
+import { groupBy } from 'lodash';
 
+
+
+var category = '';
 
 function customDietName(param) {
     if (param === "Kosher") {
@@ -35,6 +40,8 @@ function env_impact_score(env_score, ing_factor, convertor) {
 }
 
 
+
+
 export default function Control(props) {
     const [title, setTitle] = useState("Process");
     const [pickedRecipe, setPickedRecipe] = useState(props.recipe);
@@ -43,11 +50,14 @@ export default function Control(props) {
     const [dynamicIngredients, setDynamicIngredients] = useState([]);
     const [aromas, setAromas] = useState();
     const [tastes, setTastes] = useState();
-    const [landUse, setLandUse] = useState();
-    const [ghg, setGhg] = useState();
+    const [open, setOpen] = useState(false);
+    const [openDic, setOpenDic] = useState({});
 
-    const [totalLandUse, setTotalLandUse] = useState(0)
-    const [totalGhg, setTotalGhg] = useState(0)
+
+    // const [landUse, setLandUse] = useState();
+    // const [ghg, setGhg] = useState();
+    // const [totalLandUse, setTotalLandUse] = useState(0)
+    // const [totalGhg, setTotalGhg] = useState(0)
 
     const [isLoading, SetIsLoading] = useState(true);
     const [metaRecipe, setMetaRecipe] = useState()
@@ -63,13 +73,18 @@ export default function Control(props) {
             setTitle(data.name);
             setEnvImpactAvgMetaReicpe(data.env_impact_avg)
             setPickedRecipe(data);
+
+            // find the choosed recipe
             for (const recipe of data.recipes) {
                 if (recipe.diet == pickedDiet) {
-                    setIngredients(recipe.ingredients);
+                    setIngredients(groupBy(recipe.ingredients, "category"));
                     setDynamicIngredients(recipe.ingredients);
-                    break;
+
+
                 }
             }
+
+
         })
             .catch(err => {
                 console.log(err);
@@ -80,6 +95,8 @@ export default function Control(props) {
 
     useEffect(() => {
         get_recipe();
+        get_category_titles()
+
     }, []);
 
 
@@ -170,6 +187,18 @@ export default function Control(props) {
 
     };
 
+    const get_category_titles = () => {
+        let category_dic = {}
+
+        if (ingredients.length !== 0) {
+            for (const cat_t of Object.keys(ingredients)) {
+                category_dic[cat_t] = false;
+            }
+            setOpenDic(category_dic);
+
+        }
+    }
+
 
     useEffect(() => {
         calculate_aromas_avarge();
@@ -190,6 +219,8 @@ export default function Control(props) {
     )
 
 
+
+
     // const dd = metaRecipe.recipes[0];
     return (
         <div className="container text-left ">
@@ -197,24 +228,74 @@ export default function Control(props) {
             {/* <div><pre>{ metaRecipe && JSON.parse(metaRecipe, null, 2)}</pre></div> */}
 
             <div className="row">
+
+                {/* { dynamicIngredients && console.log(groupBy(dynamicIngredients , "category" )) } */}
                 <div className="col-md-4">
-                    <ul >
+                    <ul>
                         <li className="list-group-item d-flex justify-content-between align-items-center ">
                             <button type="button" className="btn btn-info " >Show zeros</button>
                             <button type="button" className="btn btn-info " >Hide zeros</button>
                         </li>
-                        {
-                            dynamicIngredients.map(ing =>
-                                <li className="list-group-item d-flex justify-content-between align-items-center " key={ing.id}>
-                                    {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name} 
+
+                    </ul>
+                    {
+                        ingredients && Object.entries(ingredients).map(([cat, val]) => {
+
+                            return (
+
+
+
+                                <Card key={cat}>
+
+                                    <Card.Header className="list-group-item d-flex justify-content-between align-items-center text-capitalize bg-light"
+                                        onClick={() => setOpenDic(openDic => ({
+                                            ...openDic,
+                                            [cat]: !openDic[cat]
+                                        }))}
+                                        aria-controls={cat}
+                                        aria-expanded={openDic[cat]}
+                                        key={cat}
+                                    >
+                                        {cat}
+                                    </Card.Header >
+                                    <Collapse in={openDic[cat]}>
+
+                                        <ul id={cat} className="list-group list-group-flush">
+                                            {
+                                                val.map(ing =>
+                                                    <li className="list-group-item d-flex justify-content-between align-items-center text-capitalize" key={ing.id}>
+                                                        {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name}
+                                                        <AmountSlider ingredient={ing}
+                                                            onChange={(val) => handleIngValChange(val, ing.id)}
+                                                        />
+                                                    </li>
+                                                )
+                                            }
+                                        </ul>
+                                    </Collapse>
+
+
+
+                                </Card>
+                            )
+                        }
+                        )
+                    }
+
+                    <ul >
+
+
+                        {/* {
+                            // dynamicIngredients && groupBy(dynamicIngredients , "category" ).map(cat => {
+                            dynamicIngredients && dynamicIngredients.map(ing =>
+                                <li className="list-group-item d-flex justify-content-between align-items-center text-capitalize" key={ing.id}>
+                                    {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name}
                                     <AmountSlider ingredient={ing}
                                         onChange={(val) => handleIngValChange(val, ing.id)}
                                     />
-                                    {/* <div><pre>{ing.name} </pre></div> */}
-
                                 </li>
                             )
-                        }
+                        } */}
 
                     </ul>
                 </div>
