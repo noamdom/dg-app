@@ -48,7 +48,7 @@ const LineByData = (props) => {
 
     return (
         <div>
-            <HorizontalBar
+            <Bar
                 data={chartData}
                 options={{
                     responsive: true,

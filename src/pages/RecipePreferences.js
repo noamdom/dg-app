@@ -9,6 +9,7 @@ export default function RecipePreferences() {
     const [title, setTitle] = useState("Menu");
     const [choosedRecipe, setchoosedRecipe] = useState(null);
     const [choosedDiet, setChoosedDiet] = useState(null);
+    const [showZeros, setShowZeros] = useState(false);
     const [menu, setMenu] = useState();
 
 
@@ -47,32 +48,42 @@ export default function RecipePreferences() {
 
     return (
         <div>
-            <header >
-
-                {!choosedRecipe &&
-                    <div className="display-4 text-primary mt-3 mb-2">
-                        {title}
-                    </div>}
-                <div className="display-4 text-info my-2 ">
-                    {choosedRecipe?.name}
-                </div>
-                <div className="h4 text-info my-2 ">  {choosedDiet}</div>
-
-            </header>
             <div className="container">
-                {choosedRecipe &&
-                    <div className="ml-5 text-left">
-                        <button className="btn btn-primary" onClick={() => restart()} >restart</button>
-                        {choosedRecipe && menu && choosedDiet &&
-                            <button className="btn btn-primary" onClick={() => replace_diet()} >Replace Diet</button>}
-                        {choosedRecipe && menu && choosedDiet &&
-                            <button className="btn btn-primary"  >finish</button>}
-                    </div>}
+                <div className="row ">
+
+                    <header className=" col-6 " >
+                        {!choosedRecipe &&
+                            <div className="display-4 text-primary mt-3 mb-2">
+                                {title}
+                            </div>}
+                        <div className="display-4 text-info my-2 ">
+                            {choosedRecipe?.name}
+                        </div>
+                        <div className="h4 text-info my-2 ">  {choosedDiet}</div>
+
+                    </header>
+
+                    {choosedRecipe &&
+                        <div className="col-86 d-flex justify-content-center align-items-center ">
+                            <button className="btn btn-primary mr-2" onClick={() => restart()} >restart</button>
+                            {choosedRecipe && menu && choosedDiet &&
+                                <button className="btn btn-primary mr-2" onClick={() => replace_diet()} >Replace Diet</button>}
+                            {choosedRecipe && menu && choosedDiet &&
+                                <button className="btn btn-primary mr-2"
+                                    onClick={() => setShowZeros(!showZeros)}
+                                >
+                                    {showZeros ? 'Hide ' : 'Show '}Zeros
+                                </button>}
+                            {choosedRecipe && menu && choosedDiet &&
+                                <button className="btn btn-primary mr-2"  >finish</button>}
+                        </div>
+                    }
+                </div>
             </div>
             <div>
                 {!choosedRecipe && menu && <Menu data={menu} pickRecipe={pickRecipe} />}
                 {choosedRecipe && menu && !choosedDiet && <DietRestriction dietCLick={dietCLick} />}
-                {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} />}
+                {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} zeros={showZeros} />}
             </div>
         </div>
 

@@ -5,10 +5,12 @@ import AmountSlider from '../components/AmountsSlider.js'
 import ServiceApi from "../services/ServiceApi.js";
 import { Button, Collapse, Card } from 'react-bootstrap';
 import { groupBy } from 'lodash';
+import { variance } from 'mathjs'
 
 
+const DIGIT_AFTER_POINT = 100
+const WATER_FACTOR = 0.1
 
-var category = '';
 
 function customDietName(param) {
     if (param === "Kosher") {
@@ -18,6 +20,40 @@ function customDietName(param) {
     } else {
         return "VEGAN"
     }
+}
+
+const cateogry_reduce = (ingredient_data) => {
+    let result = {};
+    Object.values(ingredient_data).map(ing => {
+        let key = ing['category'];
+        if (key.startsWith('fruit') || key.startsWith('vegetable') || key.startsWith('fungus') || key.startsWith('plant') || key.startsWith('herb') || key.startsWith('seed')) {
+            'fruit / vegetable / plant' in result ? result['fruit / vegetable / plant'].push(ing) : result['fruit / vegetable / plant'] = [ing];
+        } else if (key.startsWith('beverage')) {
+            'beverage' in result ? result['beverage'].push(ing) : result['beverage'] = [ing];
+        } else if (key.startsWith('nutseed')) {
+            'nutseed' in result ? result['nutseed'].push(ing) : result['nutseed'] = [ing];
+        } else if (key.startsWith('spice') || key.startsWith('essentialoil') || key.startsWith('additive')) {
+            'spice / additive' in result ? result['spice / additive'].push(ing) : result['spice / additive'] = [ing];
+        } 
+        else if (key.startsWith('fish') ||
+                 key.startsWith('meat') || 
+                 key.startsWith('dairy') || 
+                 key.startsWith('animalproduct') ) {
+            'animalproduct' in result ? result['animalproduct'].push(ing) 
+                                    : result['animalproduct'] = [ing];
+        }
+        // else if (key.startsWith('dairy') || key.startsWith('animalproduct')) {
+        //     'dairy / animalproduct' in result ? result['dairy / animalproduct'].push(ing) : result['dairy / animalproduct'] = [ing];
+        // }
+        else {
+            'dish' in result ? result['dish'].push(ing) : result['dish'] = [ing];
+            // key in result ? result[key].push(ing) : result[key] = [ing];
+        }
+    });
+
+    console.log(result);
+
+    return result;
 }
 
 
@@ -36,7 +72,17 @@ function taste_score(taste_intensity, ing_factor) {
 }
 
 function env_impact_score(env_score, ing_factor, convertor) {
-    return env_score * ing_factor * convertor;
+    return env_score * ing_factor * convertor
+}
+
+function round_number(num) {
+    return Math.round(num * DIGIT_AFTER_POINT) / DIGIT_AFTER_POINT;
+}
+
+function round_dict(dict) {
+    for (const [key, val] of Object.entries(dict)) {
+        dict[key] = round_number(val);
+    }
 }
 
 
@@ -50,14 +96,12 @@ export default function Control(props) {
     const [dynamicIngredients, setDynamicIngredients] = useState([]);
     const [aromas, setAromas] = useState();
     const [tastes, setTastes] = useState();
-    const [open, setOpen] = useState(false);
     const [openDic, setOpenDic] = useState({});
+    const [sustainableScore, setSustainableScore] = useState(0)
+    const [aromaScore, setAromaScore] = useState(0)
+    const [tasteScore, setTasteScore] = useState(0)
+    const [showZeros, setShowZeros] = useState(false);
 
-
-    // const [landUse, setLandUse] = useState();
-    // const [ghg, setGhg] = useState();
-    // const [totalLandUse, setTotalLandUse] = useState(0)
-    // const [totalGhg, setTotalGhg] = useState(0)
 
     const [isLoading, SetIsLoading] = useState(true);
     const [metaRecipe, setMetaRecipe] = useState()
@@ -77,7 +121,7 @@ export default function Control(props) {
             // find the choosed recipe
             for (const recipe of data.recipes) {
                 if (recipe.diet == pickedDiet) {
-                    setIngredients(groupBy(recipe.ingredients, "category"));
+                    setIngredients(cateogry_reduce(recipe.ingredients));
                     setDynamicIngredients(recipe.ingredients);
 
 
@@ -95,59 +139,74 @@ export default function Control(props) {
 
     useEffect(() => {
         get_recipe();
-        get_category_titles()
+        get_category_titles();
 
     }, []);
 
+    
+
 
     const calculate_aromas_avarge = () => {
-        const aromas_avg = {};
-        const avg_factor = 1 / dynamicIngredients.length;
 
-        dynamicIngredients.map(ing => {
-            if (ing.value > 0) {
-                let factor = noramlize_value(ing.value, ing.min, ing.max);
+        if (dynamicIngredients.length > 0) {
 
-                // filter out none arome data:
-                let { entity_id, entity_alias_readable, ...aromaVals } = ing.aromas;
+            const aromas_avg = {};
+            const avg_factor = 1 / dynamicIngredients.length;
 
-                // analyze avg data
-                for (const [key, val] of Object.entries(aromaVals)) {
-                    if (key in aromas_avg) {
-                        aromas_avg[key] += (aroma_score(val, factor) * avg_factor);
-                    } else {
-                        aromas_avg[key] = aroma_score(val, factor) * avg_factor
+            dynamicIngredients.map(ing => {
+                if (ing.value > 0) {
+                    let factor = noramlize_value(ing.value, ing.min, ing.max);
+
+                    // filter out none arome data:
+                    let { entity_id, entity_alias_readable, ...aromaVals } = ing.aromas;
+
+                    // analyze avg data
+                    for (const [key, val] of Object.entries(aromaVals)) {
+                        if (key in aromas_avg) {
+                            aromas_avg[key] += (aroma_score(val, factor) * avg_factor);
+                        } else {
+                            aromas_avg[key] = aroma_score(val, factor) * avg_factor
+                        }
                     }
                 }
-            }
-        });
-        setAromas(aromas_avg);
+            });
+
+            round_dict(aromas_avg);
+            setAromaScore(round_number(variance(Object.values(aromas_avg), 'uncorrected')));
+            setAromas(aromas_avg);
+        }
     };
 
 
 
     const calculate_taste_avarge = () => {
-        const taste_avg = {};
-        const avg_factor = 1 / dynamicIngredients.length;
+        if (dynamicIngredients.length > 0) {
 
-        dynamicIngredients.map(ing => {
-            if (ing.value > 0) {
-                let factor = noramlize_value(ing.value, ing.min, ing.max);
+            const taste_avg = {};
+            const avg_factor = 1 / dynamicIngredients.length;
 
-                // filter out none arome data:
-                let { entity_id, taste_name, ...taste_vals } = ing.tastes;
+            dynamicIngredients.map(ing => {
+                if (ing.value > 0) {
+                    let factor = noramlize_value(ing.value, ing.min, ing.max);
 
-                // analyze avg data
-                for (const [key, val] of Object.entries(taste_vals)) {
-                    if (key in taste_avg) {
-                        taste_avg[key] += (taste_score(val, factor) * avg_factor);
-                    } else {
-                        taste_avg[key] = taste_score(val, factor) * avg_factor
+                    // filter out none arome data:
+                    let { entity_id, taste_name, ...taste_vals } = ing.tastes;
+
+                    // analyze avg data
+                    for (const [key, val] of Object.entries(taste_vals)) {
+                        if (key in taste_avg) {
+                            taste_avg[key] += (taste_score(val, factor) * avg_factor);
+                        } else {
+                            taste_avg[key] = taste_score(val, factor) * avg_factor
+                        }
                     }
                 }
-            }
-        });
-        setTastes(taste_avg);
+            });
+
+            round_dict(taste_avg);
+            setTasteScore(round_number(variance(Object.values(taste_avg), 'uncorrected')));
+            setTastes(taste_avg);
+        }
     };
 
 
@@ -173,16 +232,22 @@ export default function Control(props) {
                     let factor = noramlize_value(ing.value, ing.min, ing.max);
                     let env_impact_data = ing.env_impact;
 
-                    env_impact['land_use'] += env_impact_score(env_impact_data.land_use, factor, ing.unit_convertor_g)
+                    env_impact['land_use'] += env_impact_score(env_impact_data.land_use, factor, ing.unit_convertor_g);
                     env_impact['ghg'] += env_impact_score(env_impact_data.ghg_emissions, factor, ing.unit_convertor_g);
                     env_impact['acid'] += env_impact_score(env_impact_data.acidifying_emissions, factor, ing.unit_convertor_g);
                     env_impact['eutrophy'] += env_impact_score(env_impact_data.eutrophying_emissions, factor, ing.unit_convertor_g);
-                    env_impact['freshwater'] += env_impact_score(env_impact_data.freshwater_withdrawals, factor, ing.unit_convertor_g);
+                    env_impact['freshwater'] += (env_impact_score(env_impact_data.freshwater_withdrawals, factor, ing.unit_convertor_g) * WATER_FACTOR);
                 }
             });
 
+            // round values:
+            round_dict(env_impact)
+
+
+
             // send the result
             setEnvImpact(env_impact)
+
         }
 
     };
@@ -199,14 +264,40 @@ export default function Control(props) {
         }
     }
 
+    const calculate_score = () => {
+        if (envImpactAvgMetaReicpe && envImpact) {
+            let sum = 0;
+            for (const key of Object.keys(envImpact)) {
+                sum += ((envImpact[key] - envImpactAvgMetaReicpe[key]) * 0.2);
+            }
+
+            setSustainableScore(Math.round(sum * DIGIT_AFTER_POINT) / DIGIT_AFTER_POINT);
+        }
+    }
+
+
 
     useEffect(() => {
         calculate_aromas_avarge();
         calculate_taste_avarge();
         calculate_env_impact_avarge();
+
+
         SetIsLoading(false);
 
-    }, [dynamicIngredients, metaRecipe])
+    }, [dynamicIngredients, metaRecipe, envImpactAvgMetaReicpe])
+
+
+    useEffect(() => {
+        calculate_score()
+
+    }, [envImpactAvgMetaReicpe, envImpact])
+
+
+    useEffect(() => {
+        get_category_titles()
+
+    }, [ingredients]);
 
 
     const handleIngValChange = (val, id) => (
@@ -217,6 +308,29 @@ export default function Control(props) {
                     : ing)
         )
     )
+
+    const sustaible_indication = () => {
+        if (sustainableScore < -3) {
+            return "bg-success"
+        } else if (sustainableScore < 3) {
+            return "bg-warning"
+        } else {
+            return "bg-danger"
+        }
+    }
+
+
+    const falvor_indication = (flavor_score) => {
+        if (flavor_score <= 1) {
+            return "bg-success"
+        } else if (flavor_score < 5) {
+            return "bg-warning"
+        } else {
+            return "bg-danger"
+        }
+    }
+
+
 
 
 
@@ -231,22 +345,14 @@ export default function Control(props) {
 
                 {/* { dynamicIngredients && console.log(groupBy(dynamicIngredients , "category" )) } */}
                 <div className="col-md-4">
-                    <ul>
-                        <li className="list-group-item d-flex justify-content-between align-items-center ">
-                            <button type="button" className="btn btn-info " >Show zeros</button>
-                            <button type="button" className="btn btn-info " >Hide zeros</button>
-                        </li>
+                    <div className="col-md-2 d-flex justify-content-center align-items-center ">
 
-                    </ul>
+                    </div>
                     {
                         ingredients && Object.entries(ingredients).map(([cat, val]) => {
 
                             return (
-
-
-
                                 <Card key={cat}>
-
                                     <Card.Header className="list-group-item d-flex justify-content-between align-items-center text-capitalize bg-light"
                                         onClick={() => setOpenDic(openDic => ({
                                             ...openDic,
@@ -254,7 +360,7 @@ export default function Control(props) {
                                         }))}
                                         aria-controls={cat}
                                         aria-expanded={openDic[cat]}
-                                        key={cat}
+                                    // key={cat}
                                     >
                                         {cat}
                                     </Card.Header >
@@ -262,8 +368,10 @@ export default function Control(props) {
 
                                         <ul id={cat} className="list-group list-group-flush">
                                             {
-                                                val.map(ing =>
-                                                    <li className="list-group-item d-flex justify-content-between align-items-center text-capitalize" key={ing.id}>
+                                                val.map((ing, i) =>
+                                                    <li className={"  list-group-item  justify-content-between align-items-center text-capitalize "
+                                                            + (props.zeros || ing.value > 0 ? "d-flex" : " d-none")}  
+                                                        key={(ing.id) + "_" + (i)}>
                                                         {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name}
                                                         <AmountSlider ingredient={ing}
                                                             onChange={(val) => handleIngValChange(val, ing.id)}
@@ -282,29 +390,24 @@ export default function Control(props) {
                         )
                     }
 
-                    <ul >
 
-
-                        {/* {
-                            // dynamicIngredients && groupBy(dynamicIngredients , "category" ).map(cat => {
-                            dynamicIngredients && dynamicIngredients.map(ing =>
-                                <li className="list-group-item d-flex justify-content-between align-items-center text-capitalize" key={ing.id}>
-                                    {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name}
-                                    <AmountSlider ingredient={ing}
-                                        onChange={(val) => handleIngValChange(val, ing.id)}
-                                    />
-                                </li>
-                            )
-                        } */}
-
-                    </ul>
                 </div>
                 <div className="col-md-8">
                     <div aria-label="breadcrumb">
+
                         <ol className="breadcrumb ">
-                            <li className="lead">Sustainable Score: 50</li>
+                            <li>
+                                <span className={" lead px-2 mr-2  " + (sustaible_indication())}>Sustaible: {sustainableScore}</span>
+                            </li>
+                            <li>
+                                <span className={"lead px-2 mr-2  " + (falvor_indication(aromaScore))}>Aroma: {aromaScore}</span>
+                            </li>
+                            <li>
+                                <span className={"lead px-2 mr-2  " + (falvor_indication(tasteScore))}>Taste: {tasteScore}</span>
+                            </li>
                         </ol>
                     </div>
+
                     {aromas && envImpact && envImpactAvgMetaReicpe && tastes &&
                         <div>
                             <div className="row justify-content-center">
@@ -316,13 +419,12 @@ export default function Control(props) {
                                     < RadarChart data={tastes} title={"Taste Intensity"} />
                                 </div>
                             </div>
-
-
-
-                            < LineChart
-                                dynamic_env_impact={envImpact}
-                                env_impact_avg={envImpactAvgMetaReicpe}
-                            />
+                            <div className="col-md-10 offset-1  justify-content-center align-items-center ">
+                                < LineChart
+                                    dynamic_env_impact={envImpact}
+                                    env_impact_avg={envImpactAvgMetaReicpe}
+                                />
+                            </div>
                         </div>
                     }
                 </div>

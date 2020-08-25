@@ -13,7 +13,7 @@ class Navigation extends Component {
             <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
                 <div className="container-fluid">
                     <Link to="/" className="navbar-brand">
-                        <GiChefToque className="mr-1" /> Recipe app
+                        <GiChefToque className="mr-1" /> Recipe analyzer
                      </Link>
                     <div className="navbar-nav ml-auto">
                         <Link className="nav-item nav-link" to="/">
@@ -31,9 +31,9 @@ class Navigation extends Component {
                         {/* <Link className="nav-item nav-link"  to="/process">
                             Process
                         </Link> */}
-                        {/* <Link className="nav-item nav-link"  to="/tests">
+                        <Link className="nav-item nav-link"  to="/tests">
                             Tests
-                        </Link> */}
+                        </Link>
 
 
                         {/* <a className="nav-item nav-link" href="/login">

@@ -37,7 +37,7 @@ class App extends Component {
             <Route path="/ingredient" component={IngredientPage} />
             <Route path="/recipe-preferences" component={RecipePreferences} />
             {/* <Route path="/process" component={Process} /> */}
-            {/* <Route path="/tests" component={Tests} /> */}
+            <Route path="/tests" component={Tests} />
             <Route component={NotFound}  />
           </Switch>
         </div>
