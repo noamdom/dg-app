@@ -36,6 +36,7 @@ class SingleRecipeIngredientSerializer(serializers.ModelSerializer):
         #           'aromas',  'single_recipe', )
         fields = ('id', 'name', 'entity_id', 'category', 'min', 'max', 'value', 'unit', 'unit_convertor_g',
                   'aromas', 'tastes', 'env_impact', 'single_recipe')
+
         extra_kwargs = {
             # 'ingredient recipe number': {'source': 'id'},
             'single_recipe': {'write_only': True},
@@ -45,7 +46,6 @@ class SingleRecipeIngredientSerializer(serializers.ModelSerializer):
         # return "aroma data..."
         aroma = Aroma.objects.filter(entity_id=ing.entity_id).values()
         return aroma[0]  # [0]  because filter return array
-
 
     def get_env_impact(self, ing):
         # return "land use data..."
@@ -73,16 +73,22 @@ class SingleRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SingleRecipe
-        fields = ('id', 'diet', 'metarecipe')
+        # fields = ('id', 'diet', 'metarecipe')
         fields = ('id', 'diet', 'ingredients', 'metarecipe')
         extra_kwargs = {
-
             'metarecipe': {'write_only': True},
         }
 
     def get_ingredients(self, recipe):
         ingredients_by_recipe = SingleRecipeIngredient.objects.filter(single_recipe=recipe.id)
-        return SingleRecipeIngredientSerializer(ingredients_by_recipe, many=True).data
+        data = SingleRecipeIngredientSerializer(ingredients_by_recipe, many=True).data
+        print(type(data))
+        return data
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response["ingredients"] = sorted(response["ingredients"], key=lambda x: x["category"])
+        return response
 
 
 def noramlize_value(val, min, max):
@@ -105,7 +111,6 @@ class MetaRecipeSerializer(serializers.ModelSerializer):
     def get_recipes(self, metarecipe):
         single_recipes_by_metarecipe = SingleRecipe.objects.filter(metarecipe=metarecipe.id)
         return SingleRecipeSerializer(single_recipes_by_metarecipe, many=True).data
-
 
     def get_env_impact_avg(self, metarecipe):
         single_recipes_by_metarecipe = self.get_recipes(metarecipe)
@@ -134,12 +139,16 @@ class MetaRecipeSerializer(serializers.ModelSerializer):
                     metarecipe_env_impact_avg['acid'] += env_impact_score(env_impact['acidifying_emissions'],
                                                                           factor,
                                                                           convertor) * avg_factor
-                    metarecipe_env_impact_avg['eutrophy'] += env_impact_score(env_impact['eutrophying_emissions'],
+                    metarecipe_env_impact_avg['eutrophy'] += (env_impact_score(env_impact['eutrophying_emissions'],
                                                                               factor,
-                                                                              convertor) * avg_factor
-                    metarecipe_env_impact_avg['freshwater'] += env_impact_score(env_impact['freshwater_withdrawals'],
+                                                                              convertor) * avg_factor)
+                    metarecipe_env_impact_avg['freshwater'] += (env_impact_score(env_impact['freshwater_withdrawals'],
                                                                                 factor,
-                                                                                convertor) * avg_factor
+                                                                                convertor) * avg_factor * 0.1)
+
+        # round values
+        for  key , val in metarecipe_env_impact_avg.items():
+            metarecipe_env_impact_avg[key] = round(val,2)
 
         return metarecipe_env_impact_avg
 
@@ -148,6 +157,7 @@ class EnvironmentalImpactSerializer(serializers.ModelSerializer):
     class Meta:
         model = EnvironmentalImpact
         fields = '__all__'
+
 
 # class IngOfRecipeSerializer(serializers.ModelSerializer):
 #     aromas = serializers.SerializerMethodField()
