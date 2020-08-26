@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GiChefToque } from 'react-icons/gi';
+import { GiChefToque , GiHamburgerMenu } from 'react-icons/gi';
 import {Link } from 'react-router-dom'
 
 
@@ -11,11 +11,11 @@ class Navigation extends Component {
 
         return (
             <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
-                <div className="container-fluid">
+                <div className="container-fluid justify-content-between">
                     <Link to="/" className="navbar-brand">
                         <GiChefToque className="mr-1" /> Recipe analyzer
                      </Link>
-                    <div className="navbar-nav ml-auto">
+                    <div className="navbar-nav ">
                         <Link className="nav-item nav-link" to="/">
                             Home
                         </Link>
@@ -49,6 +49,7 @@ class Navigation extends Component {
 
 
                     </div>
+                    <GiHamburgerMenu />
                 </div>
             </nav>
         )
