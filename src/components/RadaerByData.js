@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Radar } from "react-chartjs-2";
+import { Radar ,defaults } from "react-chartjs-2";
 
+ 
 
 defaults.global.defaultFontFamily  = "'Baloo Tamma 2'";
 
