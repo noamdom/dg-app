@@ -345,15 +345,16 @@ export default function Control(props) {
 
                 {/* { dynamicIngredients && console.log(groupBy(dynamicIngredients , "category" )) } */}
                 <div className="col-md-4">
-                    <div className="col-md-2 d-flex justify-content-center align-items-center ">
-
-                    </div>
+                   <div  className="overflow-auto" style={{height : '69vh'}}>
+                    
                     {
                         ingredients && Object.entries(ingredients).map(([cat, val]) => {
 
                             return (
-                                <Card key={cat}>
-                                    <Card.Header className="list-group-item d-flex justify-content-between align-items-center text-capitalize bg-light"
+
+                                
+                                <Card key={cat} >
+                                    <Card.Header className="list-group-item d-flex justify-content-between align-items-center text-capitalize bg-light "
                                         onClick={() => setOpenDic(openDic => ({
                                             ...openDic,
                                             [cat]: !openDic[cat]
@@ -372,7 +373,7 @@ export default function Control(props) {
                                                     <li className={"  list-group-item  justify-content-between align-items-center text-capitalize "
                                                             + (props.zeros || ing.value > 0 ? "d-flex" : " d-none")}  
                                                         key={(ing.id) + "_" + (i)}>
-                                                        {noramlize_value(ing.value, ing.min, ing.max)}g {ing.name}
+                                                        {noramlize_value(ing.value, ing.min, ing.max)}{ing.unit} {ing.name}
                                                         <AmountSlider ingredient={ing}
                                                             onChange={(val) => handleIngValChange(val, ing.id)}
                                                         />
@@ -389,6 +390,8 @@ export default function Control(props) {
                         }
                         )
                     }
+                    </div>
+                    
 
 
                 </div>
