@@ -39,7 +39,7 @@ class SingleRecipeIngredientSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             # 'ingredient recipe number': {'source': 'id'},
-            'single_recipe': {'write_only': True},
+            # 'single_recipe': {'write_only': True},
         }
 
     def get_aromas(self, ing):

@@ -61,7 +61,7 @@ class SingleRecipe(models.Model):
     # ingredient
     # instruction
     def __str__(self):
-        return self.name + ": " + self.diet
+        return str(self.id) + ": " + self.diet
 
 
 class SingleRecipeIngredient(models.Model):
@@ -73,7 +73,7 @@ class SingleRecipeIngredient(models.Model):
     single_recipe = models.ForeignKey(SingleRecipe, related_name='single_recipe_ingredients', blank=True, null=True,
                                       default=None,
                                       on_delete=models.SET_NULL)
-    UNIT_CHOICES = [('KG', 'kg'), ('G', 'g'), ('L', 'l'), ('ML', 'ml')]
+    UNIT_CHOICES = [('kg', 'kg'), ('g', 'g'), ('l', 'l'), ('ml', 'ml')]
     unit = models.CharField(max_length=8, choices=UNIT_CHOICES, default='G')
     unit_convertor_g = models.FloatField(default=0.001)
 
