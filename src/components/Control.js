@@ -3,8 +3,8 @@ import RadarChart from '../components/RadaerByData.js'
 import LineChart from '../components/BasicChart.js'
 import AmountSlider from '../components/AmountsSlider.js'
 import ServiceApi from "../services/ServiceApi.js";
-import { Button, Collapse, Card } from 'react-bootstrap';
-import { groupBy } from 'lodash';
+import {  Collapse, Card , Spinner } from 'react-bootstrap';
+// import { groupBy } from 'lodash';
 import { variance } from 'mathjs'
 
 
@@ -411,7 +411,7 @@ export default function Control(props) {
                         </ol>
                     </div>
 
-                    {aromas && envImpact && envImpactAvgMetaReicpe && tastes &&
+                    {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
                         <div>
                             <div className="row justify-content-center">
                                 <div className="col-lg-4 ">
@@ -429,7 +429,12 @@ export default function Control(props) {
                                 />
                             </div>
                         </div>
-                    }
+                    :
+                    <div className="d-flex justify-content-center">
+                    <Spinner animation="border" role="status" >
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div> }
                 </div>
             </div>
         </div>

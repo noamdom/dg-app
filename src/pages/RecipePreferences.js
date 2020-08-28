@@ -3,6 +3,8 @@ import Menu from '../components/Menu.js';
 import DietRestriction from '../components/DietRestriction.js';
 import Control from '../components/Control.js';
 import ServiceApi from "../services/ServiceApi.js";
+import { Spinner } from 'react-bootstrap';
+
 
 
 export default function RecipePreferences() {
@@ -11,6 +13,7 @@ export default function RecipePreferences() {
     const [choosedDiet, setChoosedDiet] = useState(null);
     const [showZeros, setShowZeros] = useState(false);
     const [menu, setMenu] = useState();
+    const [loadMenu, setLoadMenu] = useState(true);
 
 
     useEffect(() => {
@@ -24,6 +27,7 @@ export default function RecipePreferences() {
 
         };
         get_menu();
+        setLoadMenu(false);
     }, []);
 
 
@@ -64,7 +68,7 @@ export default function RecipePreferences() {
                     </header>
 
                     {choosedRecipe &&
-                        <div className="col-86 d-flex justify-content-center align-items-center ">
+                        <div className="col-8 d-flex justify-content-center align-items-center ">
                             <button className="btn btn-primary mr-2" onClick={() => restart()} >restart</button>
                             {choosedRecipe && menu && choosedDiet &&
                                 <button className="btn btn-primary mr-2" onClick={() => replace_diet()} >Replace Diet</button>}
@@ -81,7 +85,14 @@ export default function RecipePreferences() {
                 </div>
             </div>
             <div>
-                {!choosedRecipe && menu && <Menu data={menu} pickRecipe={pickRecipe} />}
+                {loadMenu && <div className="d-flex justify-content-center">
+                    <Spinner animation="border" role="status" >
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>}
+                { !choosedRecipe && menu &&
+                    <Menu data={menu} pickRecipe={pickRecipe} />
+                    }
                 {choosedRecipe && menu && !choosedDiet && <DietRestriction dietCLick={dietCLick} />}
                 {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} zeros={showZeros} />}
             </div>
