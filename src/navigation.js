@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { GiChefToque , GiHamburgerMenu } from 'react-icons/gi';
 import {Link } from 'react-router-dom'
+import { colors } from '@material-ui/core';
+import logo from './images/logo.png';
 
 
 class Navigation extends Component {
@@ -10,27 +12,35 @@ class Navigation extends Component {
        // const {user} = "Noam"
 
         return (
-            <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
-                <div className="container-fluid justify-content-between">
+            <nav className="site-nav family-sans navbar navbar-expand navbar-light  higher my-s"
+            style={{background: "var(--primary)" , color: "var(--secondary)" }}>
+                <div className="container-fluid ">
                     <Link to="/" className="navbar-brand">
-                        <GiChefToque className="mr-1" /> Recipe analyzer
+                        {/* <img src={logo} style={{height: "5%" , width:"5%" , }} alt='logo' /> */}
+                         Recipe analyzer
                      </Link>
-                    <div className="navbar-nav ">
-                        <Link className="nav-item nav-link" to="/">
+                    <div className="navbar-nav jusfitfy-content-between" >
+                        {/* <Link className="nav-item nav-link" to="/home">
                             Home
-                        </Link>
+                        </Link> */}
                         {/* <Link className="nav-item nav-link" to="/recipe">
                             Recipe
                         </Link> */}
-                        <Link className="nav-item nav-link"  to="/ingredient">
+                        {/* <Link className="nav-item nav-link"  to="/ingredient" >
                             Ingredients
-                        </Link>
-                        <Link className="nav-item nav-link"  to="/recipe-preferences">
-                            Recipe preferences
-                        </Link>
-                        {/* <Link className="nav-item nav-link"  to="/process">
-                            Process
                         </Link> */}
+                        <Link className="nav-item nav-link"  to="/">
+                            Menu
+                        </Link>
+                        <Link className="nav-item nav-link"  to="/diet">
+                            diet
+                        </Link>
+                        <Link className="nav-item nav-link"  to="/dish">
+                            dish
+                        </Link>
+                        <Link className="nav-item nav-link"  to="/process">
+                            Process
+                        </Link>
                         <Link className="nav-item nav-link"  to="/tests">
                             Tests
                         </Link>
@@ -49,7 +59,10 @@ class Navigation extends Component {
 
 
                     </div>
-                    <GiHamburgerMenu />
+                    <div>
+
+                    {/* <GiHamburgerMenu /> */}
+                    </div>
                 </div>
             </nav>
         )

@@ -14,16 +14,16 @@ const LineByData = (props) => {
         // save data set
         datasetLand = [ {
             label: "Dish Footprint",
-            backgroundColor: colors[0],
+            backgroundColor: '#2f1544',
             borderWidth: 4,
             data: Object.values(props.dynamic_env_impact)
         }];
-       
+        
         
         // save data set
         datasetLand = [ ...datasetLand , {
             label: "Metarecipe Avarge",
-            backgroundColor: colors[1],
+            backgroundColor: '#f2b705',
             borderWidth: 4,
             data: Object.values(props.env_impact_avg)
         }];
@@ -50,13 +50,17 @@ const LineByData = (props) => {
         <div>
             <Bar
                 data={chartData}
+                // width={60}
+                // height={20}   
                 options={{
                     responsive: true,
-                    title: { text: "Environmental Impact", display: true },
-                    // legend : {
-                    //     display: false
+                    // aspectRatio: 3,
+                    title: { text: "Environmental Impact", display: false },
+                    legend : {
+                        position: 'bottom',
+                        // align: 'start'
                     
-                    // }
+                    }
 
                 }}
             />

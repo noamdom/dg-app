@@ -4,6 +4,9 @@ import { Radar ,defaults } from "react-chartjs-2";
  
 
 defaults.global.defaultFontFamily  = "'Baloo Tamma 2'";
+defaults.global.defaultFontColor =  '#2f1544'
+defaults.global.defaultFontStyle =  'bold'
+// defaults.global.defaultFontStyle =  '20'
 
 
 
@@ -20,7 +23,7 @@ const RadarByData = (props) => {
 
 
     // to do make sure about order
-    const colors = ["rgba(75, 192, 192, 0.6)", "rgba(153, 102, 255, 0.6)", "rgba(255, 159, 64, 0.6)", "rgba(54, 162, 235, 0.6)"];
+    const colors = ['#f2b705'];
 
 
     const chart = () => {
@@ -40,6 +43,7 @@ const RadarByData = (props) => {
             borderColor: data_color,
             borderWidth: 2,
             data: Object.values(props.data),
+            pointRadius: 1.5
 
         }];
 
@@ -60,16 +64,31 @@ const RadarByData = (props) => {
             <Radar
                 data={chartData}
                 width={100}
-                height={100}                
+                height={100}   
+                color ='green'
                 options={{
                     responsive: true,
                     aspectRatio: 1,
-                    title: { text: props.title, display: true },
+                   
+                    title: { text: props.title, display: false },
                     legend: {
                         display: false,
+                    },
+                    scale: {
+                        gridLines: {
+                          color: '#2f1544',
+                          lineWidth: 0.5
+                        },
+                        angleLines : {
+                            color: '#2f1544', 
+                            lineWidth: 0.5
 
+                        },
+                         ticks: {
+                            display: false
 
-                    }
+                        }
+                      }
                 }}
             />
         </div>

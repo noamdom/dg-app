@@ -3,9 +3,10 @@ import RadarChart from '../components/RadaerByData.js'
 import LineChart from '../components/BasicChart.js'
 import AmountSlider from '../components/AmountsSlider.js'
 import ServiceApi from "../services/ServiceApi.js";
-import {  Collapse, Card , Spinner } from 'react-bootstrap';
+import { Collapse, Card, Spinner } from 'react-bootstrap';
 // import { groupBy } from 'lodash';
-import { variance } from 'mathjs'
+import { variance } from 'mathjs';
+import logo from '../images/logo.png'
 
 
 const DIGIT_AFTER_POINT = 100
@@ -34,13 +35,13 @@ const cateogry_reduce = (ingredient_data) => {
             'nutseed' in result ? result['nutseed'].push(ing) : result['nutseed'] = [ing];
         } else if (key.startsWith('spice') || key.startsWith('essentialoil') || key.startsWith('additive')) {
             'spice / additive' in result ? result['spice / additive'].push(ing) : result['spice / additive'] = [ing];
-        } 
+        }
         else if (key.startsWith('fish') ||
-                 key.startsWith('meat') || 
-                 key.startsWith('dairy') || 
-                 key.startsWith('animalproduct') ) {
-            'animalproduct' in result ? result['animalproduct'].push(ing) 
-                                    : result['animalproduct'] = [ing];
+            key.startsWith('meat') ||
+            key.startsWith('dairy') ||
+            key.startsWith('animalproduct')) {
+            'animalproduct' in result ? result['animalproduct'].push(ing)
+                : result['animalproduct'] = [ing];
         }
         // else if (key.startsWith('dairy') || key.startsWith('animalproduct')) {
         //     'dairy / animalproduct' in result ? result['dairy / animalproduct'].push(ing) : result['dairy / animalproduct'] = [ing];
@@ -143,7 +144,7 @@ export default function Control(props) {
 
     }, []);
 
-    
+
 
 
     const calculate_aromas_avarge = () => {
@@ -343,60 +344,89 @@ export default function Control(props) {
 
             <div className="row">
 
-                {/* { dynamicIngredients && console.log(groupBy(dynamicIngredients , "category" )) } */}
-                <div className="col-md-4">
-                   <div  className="overflow-auto" style={{height : '69vh'}}>
-                    
-                    {
-                        ingredients && Object.entries(ingredients).map(([cat, val]) => {
-
-                            return (
-
-                                
-                                <Card key={cat} >
-                                    <Card.Header className="list-group-item d-flex justify-content-between align-items-center text-capitalize bg-light "
-                                        onClick={() => setOpenDic(openDic => ({
-                                            ...openDic,
-                                            [cat]: !openDic[cat]
-                                        }))}
-                                        aria-controls={cat}
-                                        aria-expanded={openDic[cat]}
-                                    // key={cat}
-                                    >
-                                        {cat}
-                                    </Card.Header >
-                                    <Collapse in={openDic[cat]}>
-
-                                        <ul id={cat} className="list-group list-group-flush">
-                                            {
-                                                val.map((ing, i) =>
-                                                    <li className={"  list-group-item  justify-content-between align-items-center text-capitalize "
-                                                            + (props.zeros || ing.value > 0 ? "d-flex" : " d-none")}  
-                                                        key={(ing.id) + "_" + (i)}>
-                                                        {noramlize_value(ing.value, ing.min, ing.max)}{ing.unit} {ing.name}
-                                                        <AmountSlider ingredient={ing}
-                                                            onChange={(val) => handleIngValChange(val, ing.id)}
-                                                        />
-                                                    </li>
-                                                )
-                                            }
-                                        </ul>
-                                    </Collapse>
+                <div className="col-md-4 ">
 
 
 
-                                </Card>
-                            )
-                        }
-                        )
-                    }
+
+                    <div className=" overflow-auto " style={{ height: '72vh' }}>
+                        <div className='row mx-0'  >
+                            <div className="col-1 font-weight-bold  align-middle text-center text-break align-self-strech" style={{
+                                color: "var(--secondary)",
+                                backgroundColor: "var(--primary)",
+                                border: "1px solid var(--secondary)",
+                                borderTopLeftRadius: '0.5rem',
+                                borderBottomLeftRadius: '0.5rem',
+
+                            }}> Ingredients</div>
+                            <div className="col-10 mx-0 px-0">
+                                {
+                                    ingredients && Object.entries(ingredients).map(([cat, val]) => {
+
+                                        return (
+
+
+                                            <Card key={cat} className=" border-left-0 rounded-right" >
+                                                <Card.Header className=" list-group-item border-left-0 rounded-right  d-flex  align-items-center text-capitalize"
+                                                    style={{
+                                                        border: "1px solid var(--secondary)",
+                                                        backgroundColor: "var(--light)"
+                                                    }}
+                                                    onClick={() => setOpenDic(openDic => ({
+                                                        ...openDic,
+                                                        [cat]: !openDic[cat]
+                                                    }))}
+                                                    aria-controls={cat}
+                                                    aria-expanded={openDic[cat]}
+                                                >
+                                                    <img src={logo} alt="logo" style={{ height: '10%', width: '10%' }} />
+                                                    {cat}
+                                                </Card.Header >
+                                                <Collapse in={openDic[cat]}>
+
+                                                    <ul id={cat} className="list-group list-group-flush rounded-right">
+                                                        {
+                                                            val.map((ing, i) =>
+                                                                <li className={"  list-group-item  justify-content-between rounded-right align-items-center text-capitalize "
+                                                                    + (props.zeros || ing.value > 0 ? "d-flex" : " d-none")}
+                                                                    key={(ing.id) + "_" + (i)}
+                                                                    style={{
+                                                                        borderBottom: "1px solid var(--secondary)",
+                                                                        borderRight: "1px solid var(--secondary)",
+                                                                    }}
+                                                                >
+                                                                    <div>
+                                                                    {ing.name}
+                                                                    </div>
+                                                                    <div>
+
+                                                                    <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit}
+                                                                    </div>
+
+                                                                    <AmountSlider ingredient={ing}
+                                                                        onChange={(val) => handleIngValChange(val, ing.id)}
+                                                                    />
+                                                                </li>
+                                                            )
+                                                        }
+                                                    </ul>
+                                                </Collapse>
+
+
+
+                                            </Card>
+                                        )
+                                    }
+                                    )
+                                }
+                            </div>
+                        </div>
                     </div>
-                    
 
 
                 </div>
                 <div className="col-md-8">
-                    <div aria-label="breadcrumb">
+                    {/* <div aria-label="breadcrumb">
 
                         <ol className="breadcrumb ">
                             <li>
@@ -409,34 +439,72 @@ export default function Control(props) {
                                 <span className={"lead px-2 mr-2  " + (falvor_indication(tasteScore))}>Taste: {tasteScore}</span>
                             </li>
                         </ol>
-                    </div>
+                    </div> */}
 
                     {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
                         <div>
-                            <div className="row justify-content-center">
+                            <div className="row justify-content-around">
                                 <div className="col-lg-4 ">
+                                    {/* <div className='row mx-0'  > */}
+                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
+                                        color: "var(--secondary)",
+                                        backgroundColor: "var(--primary)",
+                                        border: "1px solid var(--secondary)",
+                                        borderRadius: '0.5rem',
 
-                                    < RadarChart data={aromas} title={"Aroma Intensity"} />
+                                    }}>Aroma{'\u00A0'}Intensity</div>
+                                    <div className=" mx-0 px-0">
+                                        < RadarChart data={aromas} title={"Aroma Intensity"} />
+                                    </div>
+
+                                    {/* </div> */}
                                 </div>
-                                <div className="col-lg-4 offset-lg-1">
-                                    < RadarChart data={tastes} title={"Taste Intensity"} />
+                                <div className="col-lg-4 ">
+                                    {/* <div className='row mx-0'  > */}
+                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
+                                        color: "var(--secondary)",
+                                        backgroundColor: "var(--primary)",
+                                        border: "1px solid var(--secondary)",
+                                        borderRadius: '0.5rem',
+
+                                    }}>Taste{'\u00A0'}Intensity</div>
+                                    <div className=" mx-0 px-0">
+                                        < RadarChart data={tastes} title={"Taste Intensity"} />
+                                    </div>
+                                    {/* </div> */}
                                 </div>
                             </div>
-                            <div className="col-md-10 offset-1  justify-content-center align-items-center ">
-                                < LineChart
-                                    dynamic_env_impact={envImpact}
-                                    env_impact_avg={envImpactAvgMetaReicpe}
-                                />
+                            <div className=" row d-flex justify-content-center ">
+                                <div className="col-md-6 text-center">
+
+                                    {/* <div className='row mx-0'  > */}
+                                    <div className="  mx-0 font-weight-bold  my-2  " style={{
+                                        color: "var(--secondary)",
+                                        backgroundColor: "var(--primary)",
+                                        border: "1px solid var(--secondary)",
+                                        borderRadius: '0.5rem',
+                                    }}>
+                                        Environmental Impact
+                                    </div>
+                                </div>
                             </div>
+                                <div className=" row d-flex justify-content-center ">
+                                    <div className="col-md-8 ">
+                                            < LineChart
+                                                dynamic_env_impact={envImpact}
+                                                env_impact_avg={envImpactAvgMetaReicpe}
+                                            />
+                                    </div>
+                                </div>
                         </div>
-                    :
-                    <div className="d-flex justify-content-center">
-                    <Spinner animation="border" role="status" >
-                        <span className="sr-only">Loading...</span>
-                    </Spinner>
-                </div> }
+                        :
+                        <div className="d-flex justify-content-center">
+                            <Spinner animation="border" role="status" >
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </div>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };

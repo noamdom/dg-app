@@ -32,11 +32,15 @@ export default function RecipePreferences() {
 
 
     const pickRecipe = (recipe) => {
-        setchoosedRecipe(recipe)
+        setchoosedRecipe(recipe);
+        setTitle("Diet");
     }
 
     const dietCLick = (diet) => {
-        setChoosedDiet(diet)
+        setChoosedDiet(diet);
+        setTitle("Dish");
+
+
     }
 
     const restart = () => {
@@ -53,21 +57,29 @@ export default function RecipePreferences() {
     return (
         <div>
             <div className="container">
-                <div className="row ">
 
-                    <header className=" col-6 " >
-                        {!choosedRecipe &&
-                            <div className="display-4 text-primary mt-3 mb-2">
-                                {title}
-                            </div>}
-                        <div className="display-4 text-info my-2 ">
-                            {choosedRecipe?.name}
+                    <header className="row  align-items-center mx-0 justify-content-between" >
+                        <div style={{ color: "var(--secondary)" }}>
+                        {choosedRecipe && choosedDiet &&
+                         <h3>
+                            {choosedRecipe.name} & {choosedDiet}
+                         </h3>
+                        }    
+                        
                         </div>
-                        <div className="h4 text-info my-2 ">  {choosedDiet}</div>
+                        
+                        <div className="display-4  my-3  align-self-center   text-uppercase font-weight-bold" style={{ color: "var(--secondary)" }}>
+                            {title}
+                        </div>
+                        <div >
+                        {choosedRecipe && choosedDiet && ''
+                            }
+                            </div>
+
 
                     </header>
 
-                    {choosedRecipe &&
+                    {/* {choosedRecipe &&
                         <div className="col-8 d-flex justify-content-center align-items-center ">
                             <button className="btn btn-primary mr-2" onClick={() => restart()} >restart</button>
                             {choosedRecipe && menu && choosedDiet &&
@@ -81,8 +93,8 @@ export default function RecipePreferences() {
                             {choosedRecipe && menu && choosedDiet &&
                                 <button className="btn btn-primary mr-2"  >finish</button>}
                         </div>
-                    }
-                </div>
+                    } */}
+                
             </div>
             <div>
                 {loadMenu && <div className="d-flex justify-content-center">
@@ -90,9 +102,9 @@ export default function RecipePreferences() {
                         <span className="sr-only">Loading...</span>
                     </Spinner>
                 </div>}
-                { !choosedRecipe && menu &&
+                {!choosedRecipe && menu &&
                     <Menu data={menu} pickRecipe={pickRecipe} />
-                    }
+                }
                 {choosedRecipe && menu && !choosedDiet && <DietRestriction dietCLick={dietCLick} />}
                 {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} zeros={showZeros} />}
             </div>

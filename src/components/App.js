@@ -32,11 +32,11 @@ class App extends Component {
           <Navigation />
 
           <Switch>
-            <Route path="/" component={HomePage} exact />
+            <Route path="/" component={RecipePreferences} exact />
+            <Route path="/home" component={HomePage}  />
             {/* <Route path="/recipe" component={RecipePage} /> */}
             <Route path="/ingredient" component={IngredientPage} />
-            <Route path="/recipe-preferences" component={RecipePreferences} />
-            {/* <Route path="/process" component={Process} /> */}
+            <Route path="/process" component={Process} />
             <Route path="/tests" component={Tests} />
             <Route component={NotFound}  />
           </Switch>

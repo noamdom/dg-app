@@ -1,6 +1,18 @@
 .App {
   font-family: 'Baloo Tamma 2', cursive;
+  --primary: #f2b705;
+  --secondary: #2f1544;
+  --light: #f4f4f4;
 }
+
+.my-s {
+  color: var(--secondary) !important;
+}
+
+/* .v-t {
+  writing-mode: 'vertical-rl';
+  text-orientation:  'upright'
+} */
 
 /* .test {
   height:70vh;

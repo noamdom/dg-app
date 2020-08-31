@@ -5,11 +5,18 @@ import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 100,
+    height: '5vh',
   },
   margin: {
     height: theme.spacing(3),
   },
+   rail: {
+    height: 2,
+    opacity: 0.5,
+    backgroundColor: '#bfbfbf',
+  },
+
+
 }));
 
 
@@ -39,13 +46,20 @@ export default function MySLider(props) {
       // value: ingredient.min,
       label: ingredient.min,
       value: 0,
-      // label: 0
+    },
+
+    {
+      value: 0.25,
     },
     {
-      // value: ingredient.max,
+      value: 0.50,
+    },
+    {
+      value: 0.75,
+    },
+    {
       label: ingredient.max,
       value: 1,
-      // label: 1
     },
   ];
   
@@ -56,9 +70,11 @@ export default function MySLider(props) {
     <div className={classes.root}>
       <Slider
         value = {sliderValue}
+        orientation="vertical"
+
         onChange = {handleChange}
         getAriaValueText={valuetext}
-        aria-labelledby="discrete-slider-custom"
+        aria-labelledby="vertical-slider"
         step={0.01}
         // min = {ingredient.min}
         // max = {ingredient.max}
@@ -66,6 +82,7 @@ export default function MySLider(props) {
         max = {1}
         // valueLabelDisplay="auto"
         marks={marks}
+        
 
       />
 

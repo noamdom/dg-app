@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
+import lettuce_wrap from '../images/lettuce-wrap.png';
 
 
 export default function Menu(props) {
     const [menu, setMenu] = useState(props.data);
 
     return (
-        <div className="container">
+        <div className="container my-5">
 
+            <div className="card-deck justify-content-around">
 
-            <div className="card-deck">
-              
                 {
                     // .filter(item =>
                     //     item.name.toLowerCase().match(this.props.filterRecipe.toLowerCase())
@@ -17,16 +17,15 @@ export default function Menu(props) {
 
                     menu?.map(item =>
                         <div className="col-lg-3 col-md-4 col-sm-6  col-12" key={item.id} >
-                            <div className="card my-3" >
+                            <div className="card my-3 text-center " style={{ borderColor: "var(--secondary)", borderRadius: "30px" }}  >
                                 {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
                                 <div className="card-body">
-                                    <h5 className="card-title">{item.name}</h5>
-                                    <p className="card-text">This is a wider card with supporting text below as a natural
-                             lead-in to additional content. This content is a little bit longer.</p>
-                                </div>
-                                <div className="card-footer">
+                                    <h5 className="card-title font-weight-bold" style={{ color: "var(--secondary)" }}>{item.name}</h5>
+
                                     <small className="text-muted">
-                                        <button type="button" className="btn btn-info" onClick={() => props.pickRecipe(item)}>Cook</button>
+                                        <button type="button" className="btn " onClick={() => props.pickRecipe(item)}>
+                                            <img src={lettuce_wrap} alt="dish icon" style={{ height: "80%", width: "80%" }} />
+                                        </button>
                                     </small>
                                 </div>
                             </div>
@@ -35,6 +34,7 @@ export default function Menu(props) {
                     )
                 }
             </div>
+
         </div>
     )
 }
