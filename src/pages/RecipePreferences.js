@@ -93,7 +93,7 @@ export default function RecipePreferences() {
                 
             </div>
             <div>
-                {loadMenu && <div className="d-flex justify-content-center">
+                {!menu && <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status" >
                         <span className="sr-only">Loading...</span>
                     </Spinner>
