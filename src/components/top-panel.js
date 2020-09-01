@@ -14,7 +14,7 @@ export default function TopPanel(props) {
             style={{ background: "var(--primary)", color: "var(--secondary)" }}>
             <div className="container-fluid ">
                 <div to="/" className="navbar-brand">
-                    <img src={logo} style={{ height: "3%", width: "3%", }} alt='logo' />
+                    <img src={logo} style={{ height: "5%", width: "5%", }} alt='logo' />
                          Recipe analyzer
                 </div>
                 <div className="navbar-nav jusfitfy-content-between" >
