@@ -24,13 +24,13 @@ export default function DietRestriction(props) {
 
             <div className="card-deck justify-content-around">{
                 types.map((item, idx) =>
-                    <div className="col-lg-4 col-md-3 col-sm-6  col-12" key={idx} >
+                    <div className="col-lg-3 col-md-4 col-sm-5  " key={idx} >
                         <div className="card my-3 text-center "style={{ borderColor: "var(--secondary)" , borderRadius: "30px" }}  >
 
                             <div className="card-body">
                                 <h4 className="card-title font-weight-bold">{item}</h4>
                                 <button type="button" className="btn " onClick={() => props.dietCLick(item)}>
-                                    <img src={match_img(item)} alt="dish icon" style={{ height: "80%", width: "80%" }} />
+                                    <img src={match_img(item)} alt="dish icon" style={{ height: "60%", width: "60%" }} />
                                 </button>
 
                             </div>

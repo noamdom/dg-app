@@ -403,6 +403,7 @@ export default function Control(props) {
         <div className="container-fluid ">
 
             {/* <div><pre>{ metaRecipe && JSON.parse(metaRecipe, null, 2)}</pre></div> */}
+            {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
 
             <div className="row">
 
@@ -526,21 +527,7 @@ export default function Control(props) {
 
                 </div>
                 <div className="col-lg-9">
-                    {/* <div aria-label="breadcrumb">
-
-                        <ol className="breadcrumb ">
-                            <li>
-                                <span className={" lead px-2 mr-2  " + (sustaible_indication())}>Sustaible: {sustainableScore}</span>
-                            </li>
-                            <li>
-                                <span className={"lead px-2 mr-2  " + (falvor_indication(aromaScore))}>Aroma: {aromaScore}</span>
-                            </li>
-                            <li>
-                                <span className={"lead px-2 mr-2  " + (falvor_indication(tasteScore))}>Taste: {tasteScore}</span>
-                            </li>
-                        </ol>
-                    </div> */}
-                    {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
+                    
                         <div>
                             <div className="row justify-content-around">
                                 <div className="col-lg-3 ">
@@ -649,14 +636,18 @@ export default function Control(props) {
                                 </div>
                             </div> */}
                         </div>
-                        :
-                        <div className="d-flex justify-content-center">
+                         
+                        
+                </div>
+            </div>
+            
+            :   <div className="d-flex justify-content-center">
                             <Spinner animation="border" role="status" >
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
                         </div>}
-                </div>
-            </div>
+
+
         </div >
     );
 };

@@ -27,7 +27,7 @@ export default function Menu(props) {
                 {
 
                     menu.map(item =>
-                        <div className="col-lg-3 col-md-4 col-sm-6  col-12" key={item.id} >
+                        <div className="col-lg-3 col-md-4 col-sm-5  " key={item.id} >
                             <div className="card my-3 text-center " style={{ borderColor: "var(--secondary)", borderRadius: "30px" }}  >
                                 {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
                                 <div className="card-body">
@@ -35,7 +35,7 @@ export default function Menu(props) {
 
                                     <small className="text-muted">
                                         <button type="button" className="btn " onClick={() => props.pickRecipe(item)}>
-                                            <img src={match_img(item.name)} alt="dish icon" style={{ height: "80%", width: "80%" }} />
+                                            <img src={match_img(item.name)} alt="dish icon" style={{ height: "50%", width: "50%" }} />
                                         </button>
                                     </small>
                                 </div>
