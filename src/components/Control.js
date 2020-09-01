@@ -489,8 +489,8 @@ export default function Control(props) {
                                                                     <div>
                                                                         {ing.name}
                                                                     </div>
-                                                                    <div className="row px-0 mx-0">
-                                                                        <div className="mr-4">
+                                                                    <div className="row px-0 mx-0 align-items-center">
+                                                                        <div className="mr-4 ">
                                                                             <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit === "g" ? "gr" : ing.unit}
                                                                         </div>
                                                                         <AmountSlider ingredient={ing}
