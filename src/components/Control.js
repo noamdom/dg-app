@@ -12,6 +12,8 @@ import fruit_icon from '../images/fruit.png'
 import animalproduct_icon from '../images/animalproduct.png'
 import dish_icon from '../images/dish.png'
 import beverage_icon from '../images/beverage.png'
+import { RiArrowDropDownLine , RiArrowDropUpLine} from 'react-icons/ri'
+
 
 
 const DIGIT_AFTER_POINT = 100
@@ -405,13 +407,10 @@ export default function Control(props) {
             <div className="row">
 
                 <div className="col-lg-3 ">
-
-
-
-
-                    <div className=" overflow-auto " style={{ height: '72vh' }}>
+                    <div className=" " style={{ height: '72vh' , overflowY : 'auto' , overflowX : 'hidden'  }}>
                         <div className="row  justify-content-start " >
                             <div
+                                onClick={() => setIngredients(cateogry_reduce(dynamicIngredients))}
                                 className="mx-3 mt-1 pt-1 px-3"
                                 style={{
                                     color: "var(--light)",
@@ -439,24 +438,27 @@ export default function Control(props) {
 
                         </div>
                         <div className='row mx-0 mt-0'  >
-                            <div className="col-1 font-weight-bold  align-middle text-center text-break align-self-strech"
+                            <div className="col-1 px-0 font-weight-bold  align-self-strech"
                                 style={{
                                     color: "var(--secondary)",
                                     backgroundColor: "var(--primary)",
                                     border: "1px solid var(--secondary)",
                                     // borderTopLeftRadius: '0.5rem',
                                     borderBottomLeftRadius: '0.5rem',
+                                    writingMode: 'vertical-rl',
+                                    textOrientation: 'upright',
 
-                                }}> Ingredients</div>
-                            <div className="col-10 mx-0 px-0">
+                                }}> 
+                                Ingredients
+                                
+                                </div>
+                            <div className="col-11 mx-0 px-0">
                                 {
                                     ingredients && Object.entries(ingredients).map(([cat, val]) => {
-
                                         return (
-
-
                                             <Card key={cat} className=" border-left-0 rounded-right" >
-                                                <Card.Header className=" list-group-item border-left-0 rounded-right  d-flex  align-items-center text-capitalize"
+                                                <Card.Header className=" list-group-item d-flex border-left-0 rounded-right
+                                                   align-items-center justify-content-between text-capitalize"
                                                     style={{
                                                         border: "1px solid var(--secondary)",
                                                         backgroundColor: "var(--light)"
@@ -467,11 +469,18 @@ export default function Control(props) {
                                                     }))}
                                                     aria-controls={cat}
                                                     aria-expanded={openDic[cat]}
+
                                                 >
-                                                    <img src={match_img(cat)} alt="logo" style={{ height: '10%', width: '10%' }} />
-                                                    <span className='mx-3'>
-                                                        {cat}
-                                                    </span>
+                                                    <div>
+                                                        <img src={match_img(cat)} alt="logo" style={{ height: '10%', width: '10%' }} />
+                                                        <span className='mx-3'>
+                                                            {cat}
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                { openDic[cat] ? <RiArrowDropUpLine class="h4" /> : <RiArrowDropDownLine class="h4" />}
+                                                    </div>
                                                 </Card.Header >
                                                 <Collapse in={openDic[cat]}>
 

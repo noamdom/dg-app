@@ -7,7 +7,7 @@ function convert_titles(titles_arr) {
     for (const title of titles_arr) {
         if (title.startsWith("land_use")) {
             new_titles_arr = [...new_titles_arr, "Land use"];
-        }  else if (title.startsWith("fresh")) {
+        } else if (title.startsWith("fresh")) {
             new_titles_arr = [...new_titles_arr, "Freshwater(10L)"];
         } else {
             new_titles_arr = [...new_titles_arr, title.replace(/^\w/, (c) => c.toUpperCase())];
@@ -29,7 +29,7 @@ const LineByData = (props) => {
         // save data set
         datasetLand = [{
             label: "Dish Footprint",
-            backgroundColor: '#2f1544',
+            backgroundColor: '#f2b705',
             borderWidth: 4,
             data: Object.values(props.dynamic_env_impact)
         }];
@@ -38,7 +38,7 @@ const LineByData = (props) => {
         // save data set
         datasetLand = [...datasetLand, {
             label: "Metarecipe Avarge",
-            backgroundColor: '#f2b705',
+            backgroundColor: '#2f1544',
             borderWidth: 4,
             data: Object.values(props.env_impact_avg)
         }];
@@ -75,6 +75,14 @@ const LineByData = (props) => {
                         position: 'bottom',
                         // align: 'start'
 
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                color: '#2f1544',
+                                lineWidth: 0.5
+                            }
+                        }],
                     }
 
                 }}
