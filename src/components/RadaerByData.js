@@ -84,10 +84,10 @@ const RadarByData = (props) => {
                             lineWidth: 0.5
 
                         },
-                         ticks: {
-                            display: false
+                        //  ticks: {
+                        //     display: false
 
-                        }
+                        // }
                       }
                 }}
             />

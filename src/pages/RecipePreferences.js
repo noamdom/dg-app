@@ -4,6 +4,9 @@ import DietRestriction from '../components/DietRestriction.js';
 import Control from '../components/Control.js';
 import ServiceApi from "../services/ServiceApi.js";
 import { Spinner } from 'react-bootstrap';
+// import Navigation from '../navigation.js';
+import TopPanel from "../components/top-panel.js";
+
 
 
 
@@ -13,6 +16,7 @@ export default function RecipePreferences() {
     const [choosedDiet, setChoosedDiet] = useState(null);
     const [showZeros, setShowZeros] = useState(false);
     const [menu, setMenu] = useState();
+    const [step, setStep] = useState("menu");
     const [loadMenu, setLoadMenu] = useState(true);
 
 
@@ -34,11 +38,14 @@ export default function RecipePreferences() {
     const pickRecipe = (recipe) => {
         setchoosedRecipe(recipe);
         setTitle("Diet");
+        setStep("diet")
     }
 
     const dietCLick = (diet) => {
         setChoosedDiet(diet);
         setTitle("Dish");
+        setStep("dish")
+
 
 
     }
@@ -46,25 +53,29 @@ export default function RecipePreferences() {
     const restart = () => {
         setchoosedRecipe(null);
         setChoosedDiet(null);
+        setStep("menu")
+
     }
 
     const replace_diet = () => {
-        setChoosedDiet(null);
-    }
+        if(choosedRecipe) {
+            setChoosedDiet(null);
+            setStep("diet")
+        }
 
+    }
 
 
     return (
         <div>
-            <div className="container">
+             <TopPanel restart={restart} replace_diet={replace_diet} step={step} />
+            <div className="container-fluid">
 
                     <header className="row  align-items-center mx-0 justify-content-between" >
                         <div style={{ color: "var(--secondary)" }}>
-                        {choosedRecipe && choosedDiet &&
                          <h3>
-                            {choosedRecipe.name} & {choosedDiet}
+                            { choosedRecipe && choosedRecipe.name}  {choosedDiet && '\u0026'} { choosedDiet && choosedDiet}
                          </h3>
-                        }    
                         
                         </div>
                         
@@ -79,21 +90,6 @@ export default function RecipePreferences() {
 
                     </header>
 
-                    {/* {choosedRecipe &&
-                        <div className="col-8 d-flex justify-content-center align-items-center ">
-                            <button className="btn btn-primary mr-2" onClick={() => restart()} >restart</button>
-                            {choosedRecipe && menu && choosedDiet &&
-                                <button className="btn btn-primary mr-2" onClick={() => replace_diet()} >Replace Diet</button>}
-                            {choosedRecipe && menu && choosedDiet &&
-                                <button className="btn btn-primary mr-2"
-                                    onClick={() => setShowZeros(!showZeros)}
-                                >
-                                    {showZeros ? 'Hide ' : 'Show '}Zeros
-                                </button>}
-                            {choosedRecipe && menu && choosedDiet &&
-                                <button className="btn btn-primary mr-2"  >finish</button>}
-                        </div>
-                    } */}
                 
             </div>
             <div>

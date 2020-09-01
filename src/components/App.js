@@ -29,8 +29,6 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navigation />
-
           <Switch>
             <Route path="/" component={RecipePreferences} exact />
             <Route path="/home" component={HomePage}  />

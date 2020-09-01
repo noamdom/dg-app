@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
-import lettuce_wrap from '../images/lettuce-wrap.png';
+import lettuce_wrap_icon from '../images/lettuce-wrap.png';
+import stir_fry_icon from '../images/stir-fry.png';
+import carrot_cake_icon from '../images/carrot-cake.png';
 
 
 export default function Menu(props) {
     const [menu, setMenu] = useState(props.data);
+
+    const match_img = (dish_name) => {
+        if(dish_name.startsWith('Lettuce')) {
+            return lettuce_wrap_icon;
+        } else if (dish_name.startsWith('Stir')) {
+            return stir_fry_icon;
+        } else {//  == carrot 
+            return carrot_cake_icon;
+        }
+    }
 
     return (
         <div className="container my-5">
@@ -24,7 +36,7 @@ export default function Menu(props) {
 
                                     <small className="text-muted">
                                         <button type="button" className="btn " onClick={() => props.pickRecipe(item)}>
-                                            <img src={lettuce_wrap} alt="dish icon" style={{ height: "80%", width: "80%" }} />
+                                            <img src={match_img(item.name)} alt="dish icon" style={{ height: "80%", width: "80%" }} />
                                         </button>
                                     </small>
                                 </div>

@@ -6,7 +6,12 @@ import ServiceApi from "../services/ServiceApi.js";
 import { Collapse, Card, Spinner } from 'react-bootstrap';
 // import { groupBy } from 'lodash';
 import { variance } from 'mathjs';
-import logo from '../images/logo.png'
+import spice_icon from '../images/spice.png'
+import nutseed_icon from '../images/nutseed.png'
+import fruit_icon from '../images/fruit.png'
+import animalproduct_icon from '../images/animalproduct.png'
+import dish_icon from '../images/dish.png'
+import beverage_icon from '../images/beverage.png'
 
 
 const DIGIT_AFTER_POINT = 100
@@ -20,6 +25,23 @@ function customDietName(param) {
         return "KETOGENIC";
     } else {
         return "VEGAN"
+    }
+}
+
+
+const match_img = (dish_name) => {
+    if (dish_name.startsWith('fruit')) {
+        return fruit_icon;
+    } else if (dish_name.startsWith('beverage')) {
+        return beverage_icon;
+    } else if (dish_name.startsWith('nutseed')) {
+        return nutseed_icon;
+    } else if (dish_name.startsWith('animalproduct')) {
+        return animalproduct_icon;
+    } else if (dish_name.startsWith('spice')) {
+        return spice_icon;
+    } else {
+        return dish_icon;
     }
 }
 
@@ -51,8 +73,6 @@ const cateogry_reduce = (ingredient_data) => {
             // key in result ? result[key].push(ing) : result[key] = [ing];
         }
     });
-
-    console.log(result);
 
     return result;
 }
@@ -148,13 +168,15 @@ export default function Control(props) {
 
 
     const calculate_aromas_avarge = () => {
-
-        if (dynamicIngredients.length > 0) {
+        let size = Object.keys(ingredients).length;
+        if (size > 0) {
 
             const aromas_avg = {};
-            const avg_factor = 1 / dynamicIngredients.length;
+            const avg_factor = 1 / size;
 
-            dynamicIngredients.map(ing => {
+            const flat_ings = Object.values(ingredients).flat()
+
+            flat_ings.map(ing => {
                 if (ing.value > 0) {
                     let factor = noramlize_value(ing.value, ing.min, ing.max);
 
@@ -181,12 +203,13 @@ export default function Control(props) {
 
 
     const calculate_taste_avarge = () => {
-        if (dynamicIngredients.length > 0) {
+        let size = Object.keys(ingredients).length;
+        if (size > 0) {
 
             const taste_avg = {};
-            const avg_factor = 1 / dynamicIngredients.length;
-
-            dynamicIngredients.map(ing => {
+            const avg_factor = 1 / size;
+            const flat_ings = Object.values(ingredients).flat()
+            flat_ings.map(ing => {
                 if (ing.value > 0) {
                     let factor = noramlize_value(ing.value, ing.min, ing.max);
 
@@ -196,9 +219,9 @@ export default function Control(props) {
                     // analyze avg data
                     for (const [key, val] of Object.entries(taste_vals)) {
                         if (key in taste_avg) {
-                            taste_avg[key] += (taste_score(val, factor) * avg_factor);
+                            taste_avg[key] += (taste_score(val / 10, factor) * avg_factor);
                         } else {
-                            taste_avg[key] = taste_score(val, factor) * avg_factor
+                            taste_avg[key] = taste_score(val / 10, factor) * avg_factor
                         }
                     }
                 }
@@ -226,9 +249,9 @@ export default function Control(props) {
                 "freshwater": 0,
             }
 
-
+            const flat_ings = Object.values(ingredients).flat()
             // culclate by new value
-            dynamicIngredients.map(ing => {
+            flat_ings.map(ing => {
                 if (ing.value > 0) {
                     let factor = noramlize_value(ing.value, ing.min, ing.max);
                     let env_impact_data = ing.env_impact;
@@ -243,8 +266,6 @@ export default function Control(props) {
 
             // round values:
             round_dict(env_impact)
-
-
 
             // send the result
             setEnvImpact(env_impact)
@@ -286,7 +307,7 @@ export default function Control(props) {
 
         SetIsLoading(false);
 
-    }, [dynamicIngredients, metaRecipe, envImpactAvgMetaReicpe])
+    }, [ingredients, metaRecipe, envImpactAvgMetaReicpe])
 
 
     useEffect(() => {
@@ -297,18 +318,57 @@ export default function Control(props) {
 
     useEffect(() => {
         get_category_titles()
+    }, []);
 
-    }, [ingredients]);
 
-
-    const handleIngValChange = (val, id) => (
-        setDynamicIngredients(
-            dynamicIngredients.map(ing =>
+    const handleIngValChange = (val, id, cat) => {
+        // let b = ingredients[cat];
+        let c = ingredients[cat].map(ing => {
+            return (
                 ing.id === id
                     ? { ...ing, value: val }
-                    : ing)
+                    : ing
+            )
+        })
+        setIngredients(
+            {
+
+
+                ...ingredients,
+                [cat]: c
+            }
         )
-    )
+
+
+
+
+        // console.log('---');
+        // console.log(b);
+
+        //   Object.entries(ingredients).map(([category_name, catoegry_ings]) => {
+        //       cateogry_name === cat ?
+
+
+        //         catoegry_ings.map(ing => {
+        //             return(
+        //                 ing.id === id
+        //                 ?  { ...ing, value: val }
+        //                 :  ing
+        //                 )
+        //             })
+        //         })
+        //         console.log(a);
+
+
+        //         )
+
+        // setDynamicIngredients(
+        //     dynamicIngredients.map(ing =>
+        //         ing.id === id
+        //             ? { ...ing, value: val }
+        //             : ing)
+        // )
+    }
 
     const sustaible_indication = () => {
         if (sustainableScore < -3) {
@@ -338,27 +398,56 @@ export default function Control(props) {
 
     // const dd = metaRecipe.recipes[0];
     return (
-        <div className="container text-left ">
+        <div className="container-fluid ">
 
             {/* <div><pre>{ metaRecipe && JSON.parse(metaRecipe, null, 2)}</pre></div> */}
 
             <div className="row">
 
-                <div className="col-md-4 ">
+                <div className="col-lg-3 ">
 
 
 
 
                     <div className=" overflow-auto " style={{ height: '72vh' }}>
-                        <div className='row mx-0'  >
-                            <div className="col-1 font-weight-bold  align-middle text-center text-break align-self-strech" style={{
-                                color: "var(--secondary)",
-                                backgroundColor: "var(--primary)",
-                                border: "1px solid var(--secondary)",
-                                borderTopLeftRadius: '0.5rem',
-                                borderBottomLeftRadius: '0.5rem',
+                        <div className="row  justify-content-start " >
+                            <div
+                                className="mx-3 mt-1 pt-1 px-3"
+                                style={{
+                                    color: "var(--light)",
+                                    backgroundColor: "var(--secondary)",
+                                    border: "1px solid var(--light)",
+                                    borderTopRightRadius: '0.5rem',
+                                    borderTopLeftRadius: '0.5rem'
+                                }}>
+                                Reset
+                            </div>
+                            <div
+                                className="mx-2 mt-1 pt-1 px-3"
+                                style={{
+                                    color: "var(--light)",
+                                    backgroundColor: "var(--secondary)",
+                                    border: "1px solid var(--light)",
+                                    borderTopRightRadius: '0.5rem',
+                                    borderTopLeftRadius: '0.5rem'
+                                }}
+                                onClick={() => setShowZeros(!showZeros)}
+                            >
+                                {showZeros ? 'Hide ' : 'Show '}Zeros
+                            </div>
 
-                            }}> Ingredients</div>
+
+                        </div>
+                        <div className='row mx-0 mt-0'  >
+                            <div className="col-1 font-weight-bold  align-middle text-center text-break align-self-strech"
+                                style={{
+                                    color: "var(--secondary)",
+                                    backgroundColor: "var(--primary)",
+                                    border: "1px solid var(--secondary)",
+                                    // borderTopLeftRadius: '0.5rem',
+                                    borderBottomLeftRadius: '0.5rem',
+
+                                }}> Ingredients</div>
                             <div className="col-10 mx-0 px-0">
                                 {
                                     ingredients && Object.entries(ingredients).map(([cat, val]) => {
@@ -379,33 +468,35 @@ export default function Control(props) {
                                                     aria-controls={cat}
                                                     aria-expanded={openDic[cat]}
                                                 >
-                                                    <img src={logo} alt="logo" style={{ height: '10%', width: '10%' }} />
-                                                    {cat}
+                                                    <img src={match_img(cat)} alt="logo" style={{ height: '10%', width: '10%' }} />
+                                                    <span className='mx-3'>
+                                                        {cat}
+                                                    </span>
                                                 </Card.Header >
                                                 <Collapse in={openDic[cat]}>
 
                                                     <ul id={cat} className="list-group list-group-flush rounded-right">
                                                         {
-                                                            val.map((ing, i) =>
+                                                            val.map(ing =>
                                                                 <li className={"  list-group-item  justify-content-between rounded-right align-items-center text-capitalize "
-                                                                    + (props.zeros || ing.value > 0 ? "d-flex" : " d-none")}
-                                                                    key={(ing.id) + "_" + (i)}
+                                                                    + (showZeros || ing.value > 0 ? "d-flex" : " d-none")}
+                                                                    key={ing.id}
                                                                     style={{
                                                                         borderBottom: "1px solid var(--secondary)",
                                                                         borderRight: "1px solid var(--secondary)",
                                                                     }}
                                                                 >
                                                                     <div>
-                                                                    {ing.name}
+                                                                        {ing.name}
                                                                     </div>
-                                                                    <div>
-
-                                                                    <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit}
+                                                                    <div className="row px-0 mx-0">
+                                                                        <div className="mr-4">
+                                                                            <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit === "g" ? "gr" : ing.unit}
+                                                                        </div>
+                                                                        <AmountSlider ingredient={ing}
+                                                                            onChange={(val) => handleIngValChange(val, ing.id, cat)}
+                                                                        />
                                                                     </div>
-
-                                                                    <AmountSlider ingredient={ing}
-                                                                        onChange={(val) => handleIngValChange(val, ing.id)}
-                                                                    />
                                                                 </li>
                                                             )
                                                         }
@@ -425,7 +516,7 @@ export default function Control(props) {
 
 
                 </div>
-                <div className="col-md-8">
+                <div className="col-lg-9">
                     {/* <div aria-label="breadcrumb">
 
                         <ol className="breadcrumb ">
@@ -440,11 +531,10 @@ export default function Control(props) {
                             </li>
                         </ol>
                     </div> */}
-
                     {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
                         <div>
                             <div className="row justify-content-around">
-                                <div className="col-lg-4 ">
+                                <div className="col-lg-3 ">
                                     {/* <div className='row mx-0'  > */}
                                     <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
                                         color: "var(--secondary)",
@@ -456,12 +546,24 @@ export default function Control(props) {
                                     <div className=" mx-0 px-0">
                                         < RadarChart data={aromas} title={"Aroma Intensity"} />
                                     </div>
+                                    <div className="d-flex justify-content-center">
+                                        <p className={"font-weight-bold px-2 mt-2  "}
+                                            style={{
+                                                color: "var(--secondary)",
+                                                backgroundColor: "var(--primary)",
+                                                border: "1px solid var(--secondary)",
+                                                borderRadius: '0.5rem',
+
+                                            }}>
+                                            Aroma: {aromaScore}</p>
+                                    </div>
+
 
                                     {/* </div> */}
                                 </div>
-                                <div className="col-lg-4 ">
+                                <div className="col-lg-3 text-center">
                                     {/* <div className='row mx-0'  > */}
-                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
+                                    <div className=" font-weight-bold my-2  text-center  align-self-strech" style={{
                                         color: "var(--secondary)",
                                         backgroundColor: "var(--primary)",
                                         border: "1px solid var(--secondary)",
@@ -471,13 +573,54 @@ export default function Control(props) {
                                     <div className=" mx-0 px-0">
                                         < RadarChart data={tastes} title={"Taste Intensity"} />
                                     </div>
+                                    <div className="d-flex justify-content-center">
+                                        <p className={"font-weight-bold px-2 mt-2  "}
+                                            style={{
+                                                color: "var(--secondary)",
+                                                backgroundColor: "var(--primary)",
+                                                border: "1px solid var(--secondary)",
+                                                borderRadius: '0.5rem',
+
+                                            }}>
+                                            Taste: {tasteScore}</p>
+                                    </div>
                                     {/* </div> */}
                                 </div>
+                                <div className="col-lg-5 ">
+                                    {/* <div className='row mx-0'  > */}
+                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech"
+                                        style={{
+                                            color: "var(--secondary)",
+                                            backgroundColor: "var(--primary)",
+                                            border: "1px solid var(--secondary)",
+                                            borderRadius: '0.5rem',
+
+                                        }}>  Environmental Impact</div>
+                                    <div className=" mx-0 px-0">
+                                        < LineChart
+                                            dynamic_env_impact={envImpact}
+                                            env_impact_avg={envImpactAvgMetaReicpe}
+                                        />
+                                    </div>
+                                    <div className="d-flex justify-content-center">
+                                        <p className={"font-weight-bold px-2 mt-5  "}
+                                            style={{
+                                                color: "var(--secondary)",
+                                                backgroundColor: "var(--primary)",
+                                                border: "1px solid var(--secondary)",
+                                                borderRadius: '0.5rem',
+
+                                            }}>
+                                            Sustaible: {sustainableScore}</p>
+                                    </div>
+
+                                    {/* </div> */}
+                                </div>
+
                             </div>
-                            <div className=" row d-flex justify-content-center ">
+                            {/* <div className=" row d-flex justify-content-center ">
                                 <div className="col-md-6 text-center">
 
-                                    {/* <div className='row mx-0'  > */}
                                     <div className="  mx-0 font-weight-bold  my-2  " style={{
                                         color: "var(--secondary)",
                                         backgroundColor: "var(--primary)",
@@ -488,14 +631,14 @@ export default function Control(props) {
                                     </div>
                                 </div>
                             </div>
-                                <div className=" row d-flex justify-content-center ">
-                                    <div className="col-md-8 ">
-                                            < LineChart
-                                                dynamic_env_impact={envImpact}
-                                                env_impact_avg={envImpactAvgMetaReicpe}
-                                            />
-                                    </div>
+                            <div className=" row d-flex justify-content-center ">
+                                <div className="col-md-8 ">
+                                    < LineChart
+                                        dynamic_env_impact={envImpact}
+                                        env_impact_avg={envImpactAvgMetaReicpe}
+                                    />
                                 </div>
+                            </div> */}
                         </div>
                         :
                         <div className="d-flex justify-content-center">
