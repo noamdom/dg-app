@@ -557,7 +557,7 @@ export default function Control(props) {
                                             < RadarChart data={aromas} title={"Aroma Intensity"} />
                                         </div>
                                         <div className="col-12  text-center">
-                                            <img className="" src={aroma_indication()} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <img className="" src={aroma_indication()} style={{ height: "13vh", width: "13vh", }} alt='logo' />
                                             <div className="d-flex justify-content-center">
                                                 <p className={"d-flex font-weight-bold px-2 my-1  "}
                                                     style={{
@@ -589,7 +589,7 @@ export default function Control(props) {
                                             < RadarChart data={tastes} title={"Taste Intensity"} />
                                         </div>
                                         <div className="col-12  text-center">
-                                            <img className="" src={taste_indication()} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <img className="" src={taste_indication()} style={{ height: "13vh", width: "13vh", }} alt='logo' />
                                             <div className="d-flex justify-content-center">
                                                 <p className={"d-flex font-weight-bold px-2 my-1  "}
                                                     style={{
