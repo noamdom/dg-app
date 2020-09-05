@@ -83,7 +83,7 @@ export default function RecipePreferences() {
                         
                         <div 
                         className={"display-4   align-self-center   text-uppercase font-weight-bold mt-3 " + 
-                                    (title !== 'Dish' ? 'mb-3 ' : '')} 
+                                    (title !== 'Dish' ? 'mb-md-3 mb-sm-1 ' : '')} 
                         style={{ color: "var(--secondary)" }}>
                             {title}
                         </div>
