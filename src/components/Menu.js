@@ -30,11 +30,11 @@ export default function Menu(props) {
                         <div className="col-lg-3 col-md-4 col-sm-5  " key={item.id} >
                             <div className="card my-3 text-center " style={{ borderColor: "var(--secondary)", borderRadius: "30px" }}  >
                                 {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
-                                <div className="card-body">
-                                    <h5 className="card-title font-weight-bold" style={{ color: "var(--secondary)" }}>{item.name}</h5>
+                                <div className="card-body p-1">
+                                    <h5 className="card-title font-weight-bold m-1" style={{ color: "var(--secondary)" }}>{item.name}</h5>
 
                                     <small className="text-muted">
-                                        <button type="button" className="btn " onClick={() => props.pickRecipe(item)}>
+                                        <button type="button" className="btn p-1 " onClick={() => props.pickRecipe(item)}>
                                             <img src={match_img(item.name)} alt="dish icon" style={{ height: "50%", width: "50%" }} />
                                         </button>
                                     </small>

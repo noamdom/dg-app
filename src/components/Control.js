@@ -426,7 +426,7 @@ export default function Control(props) {
                  <div className="row  justify-content-start " >
                             <div
                                 onClick={() => setIngredients(cateogry_reduce(dynamicIngredients))}
-                                className="mx-3 my-1 pt-1 px-3"
+                                className="mr-1 ml-3 my-1 pt-1 px-3"
                                 style={{
                                     color: "var(--light)",
                                     backgroundColor: "var(--secondary)",
@@ -436,7 +436,7 @@ export default function Control(props) {
                                 Reset
                             </div>
                             <div
-                                className="mx-3 my-1 pt-1 px-3"
+                                className="mx-1 my-1 pt-1 px-3"
                                 style={{
                                     color: "var(--light)",
                                     backgroundColor: "var(--secondary)",

@@ -17,6 +17,7 @@ export default function TopPanel(props) {
                     <img className="py-0 my-0" src={logo} style={{ height: "4vh", width: "6vh", }} alt='logo' />
                          Recipe analyzer
                 </div>
+                
                 <div className="navbar-nav jusfitfy-content-between" >
                     <a className={"nav-item nav-link " + (props.step === "menu" ? "active" : "")  } onClick={() => props.restart()} >Menu</a>
                     <a className={"nav-item nav-link " + (props.step === "diet" ? "active" : "")  } onClick={() => props.replace_diet()} >Diet</a>

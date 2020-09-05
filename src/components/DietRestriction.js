@@ -27,10 +27,10 @@ export default function DietRestriction(props) {
                     <div className="col-lg-3 col-md-4 col-sm-5  " key={idx} >
                         <div className="card my-3 text-center "style={{ borderColor: "var(--secondary)" , borderRadius: "30px" }}  >
 
-                            <div className="card-body">
-                                <h4 className="card-title font-weight-bold">{item}</h4>
-                                <button type="button" className="btn " onClick={() => props.dietCLick(item)}>
-                                    <img src={match_img(item)} alt="dish icon" style={{ height: "60%", width: "60%" }} />
+                            <div className="card-body p-1">
+                                <h4 className="card-title font-weight-bold m-1">{item}</h4>
+                                <button type="button" className="btn p-1 " onClick={() => props.dietCLick(item)}>
+                                    <img src={match_img(item)} alt="dish icon" style={{ height: "55%", width: "55%" }} />
                                 </button>
 
                             </div>
