@@ -30,7 +30,7 @@ const LineByData = (props) => {
         datasetLand = [{
             label: "Dish Footprint",
             backgroundColor: '#f2b705',
-            borderWidth: 4,
+            // borderWidth: 4,
             data: Object.values(props.dynamic_env_impact)
         }];
 
@@ -39,7 +39,7 @@ const LineByData = (props) => {
         datasetLand = [...datasetLand, {
             label: "Metarecipe Avarge",
             backgroundColor: '#2f1544',
-            borderWidth: 4,
+            // borderWidth: 4,
             data: Object.values(props.env_impact_avg)
         }];
 

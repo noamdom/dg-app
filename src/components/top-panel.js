@@ -10,11 +10,11 @@ export default function TopPanel(props) {
 
 
     return (
-        <nav className="site-nav family-sans navbar navbar-expand navbar-light  higher my-s"
+        <nav className="site-nav navbar navbar-expand navbar-light   py-1"
             style={{ background: "var(--primary)", color: "var(--secondary)" }}>
             <div className="container-fluid ">
                 <div to="/" className="navbar-brand">
-                    <img src={logo} style={{ height: "5%", width: "5%", }} alt='logo' />
+                    <img className="py-0 my-0" src={logo} style={{ height: "4vh", width: "6vh", }} alt='logo' />
                          Recipe analyzer
                 </div>
                 <div className="navbar-nav jusfitfy-content-between" >

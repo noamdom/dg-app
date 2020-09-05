@@ -20,7 +20,7 @@ export default function DietRestriction(props) {
 
     return (
 
-        <div className="container">
+        <div className="container my-5">
 
             <div className="card-deck justify-content-around">{
                 types.map((item, idx) =>

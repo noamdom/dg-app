@@ -52,14 +52,16 @@ export default function RecipePreferences() {
 
     const restart = () => {
         setchoosedRecipe(null);
-        setChoosedDiet(null);
-        setStep("menu")
+        setChoosedDiet(null)
+        setTitle("Menu");
+        setStep("menu");
 
     }
 
     const replace_diet = () => {
         if(choosedRecipe) {
             setChoosedDiet(null);
+            setTitle("Diet");
             setStep("diet")
         }
 
@@ -71,21 +73,24 @@ export default function RecipePreferences() {
              <TopPanel restart={restart} replace_diet={replace_diet} step={step} />
             <div className="container-fluid">
 
-                    <header className="row  align-items-center mx-0 justify-content-between" >
+                    <header className="row  align-items-center mx-0 justify-content-center" >
                         <div style={{ color: "var(--secondary)" }}>
-                         <h3>
+                         {/* <h3>
                             { choosedRecipe && choosedRecipe.name}  {choosedDiet && '\u0026'} { choosedDiet && choosedDiet}
-                         </h3>
+                         </h3> */}
                         
                         </div>
                         
-                        <div className="display-4  my-3  align-self-center   text-uppercase font-weight-bold" style={{ color: "var(--secondary)" }}>
+                        <div 
+                        className={"display-4   align-self-center   text-uppercase font-weight-bold mt-3 " + 
+                                    (title !== 'Dish' ? 'mb-3 ' : '')} 
+                        style={{ color: "var(--secondary)" }}>
                             {title}
                         </div>
-                        <div >
+                        {/* <div >
                         {choosedRecipe && choosedDiet && ''
                             }
-                            </div>
+                            </div> */}
 
 
                     </header>

@@ -10,8 +10,17 @@ import spice_icon from '../images/spice.png'
 import nutseed_icon from '../images/nutseed.png'
 import fruit_icon from '../images/fruit.png'
 import animalproduct_icon from '../images/animalproduct.png'
-import dish_icon from '../images/dish.png'
-import beverage_icon from '../images/beverage.png'
+import dish_icon from '../images/dish.png';
+import beverage_icon from '../images/beverage.png';
+import best_sustainable from '../images/best-sustainable.png';
+import worst_sustainable from '../images/worst-sustainable.png';
+import mid_sustainable from '../images/mid-sustainable.png';
+import best_aroma from '../images/best-aroma.png';
+import worst_aroma from '../images/worst-aroma.png';
+import mid_aroma from '../images/mid-aroma.png';
+import best_taste from '../images/best-taste.png';
+import worst_taste from '../images/worst-taste.png';
+import mid_taste from '../images/mid-taste.png';
 import { RiArrowDropDownLine , RiArrowDropUpLine} from 'react-icons/ri'
 
 
@@ -374,22 +383,32 @@ export default function Control(props) {
 
     const sustaible_indication = () => {
         if (sustainableScore < -3) {
-            return "bg-success"
+            return best_sustainable
         } else if (sustainableScore < 3) {
-            return "bg-warning"
+            return mid_sustainable
         } else {
-            return "bg-danger"
+            return worst_sustainable
         }
     }
 
 
-    const falvor_indication = (flavor_score) => {
-        if (flavor_score <= 1) {
-            return "bg-success"
-        } else if (flavor_score < 5) {
-            return "bg-warning"
+    const aroma_indication = () => {
+        if (aromaScore <= 1) {
+            return best_aroma
+        } else if (aromaScore < 6) {
+            return mid_aroma
         } else {
-            return "bg-danger"
+            return worst_aroma
+        }
+    }
+
+    const taste_indication = () => {
+        if (tasteScore <= 1) {
+            return best_taste
+        } else if (tasteScore < 5) {
+            return mid_taste
+        } else {
+            return worst_taste
         }
     }
 
@@ -402,250 +421,261 @@ export default function Control(props) {
     return (
         <div className="container-fluid ">
 
-            {/* <div><pre>{ metaRecipe && JSON.parse(metaRecipe, null, 2)}</pre></div> */}
             {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
-
-            <div className="row">
-
-                <div className="col-lg-3 ">
-                    <div className=" " style={{ height: '72vh' , overflowY : 'auto' , overflowX : 'hidden'  }}>
-                        <div className="row  justify-content-start " >
+             <div>
+                 <div className="row  justify-content-start " >
                             <div
                                 onClick={() => setIngredients(cateogry_reduce(dynamicIngredients))}
-                                className="mx-3 mt-1 pt-1 px-3"
+                                className="mx-3 my-1 pt-1 px-3"
                                 style={{
                                     color: "var(--light)",
                                     backgroundColor: "var(--secondary)",
                                     border: "1px solid var(--light)",
-                                    borderTopRightRadius: '0.5rem',
-                                    borderTopLeftRadius: '0.5rem'
+                                    borderRadius: '0.5rem',
                                 }}>
                                 Reset
                             </div>
                             <div
-                                className="mx-2 mt-1 pt-1 px-3"
+                                className="mx-3 my-1 pt-1 px-3"
                                 style={{
                                     color: "var(--light)",
                                     backgroundColor: "var(--secondary)",
                                     border: "1px solid var(--light)",
-                                    borderTopRightRadius: '0.5rem',
-                                    borderTopLeftRadius: '0.5rem'
+                                    borderRadius: '0.5rem',
+
                                 }}
                                 onClick={() => setShowZeros(!showZeros)}
                             >
                                 {showZeros ? 'Hide ' : 'Show '}Zeros
                             </div>
 
+                </div>
+            
+                <div className="row">
+                    <div className="col-lg-3 ">
+                        <div className=" " style={{ height: '69vh' , overflowY : 'auto' , overflowX : 'hidden'  }}>
+                            
+                            <div className='row mx-0 mt-0'  >
+                                <div className="col-1 px-0 font-weight-bold  align-self-strech"
+                                    style={{
+                                        color: "var(--secondary)",
+                                        backgroundColor: "var(--primary)",
+                                        border: "1px solid var(--secondary)",
+                                        borderTopLeftRadius: '0.5rem',
+                                        borderBottomLeftRadius: '0.5rem',
+                                        writingMode: 'vertical-rl',
+                                        textOrientation: 'upright',
 
-                        </div>
-                        <div className='row mx-0 mt-0'  >
-                            <div className="col-1 px-0 font-weight-bold  align-self-strech"
-                                style={{
-                                    color: "var(--secondary)",
-                                    backgroundColor: "var(--primary)",
-                                    border: "1px solid var(--secondary)",
-                                    // borderTopLeftRadius: '0.5rem',
-                                    borderBottomLeftRadius: '0.5rem',
-                                    writingMode: 'vertical-rl',
-                                    textOrientation: 'upright',
+                                    }}> 
+                                    Ingredients
+                                    
+                                    </div>
+                                <div className="col-11 mx-0 px-0">
+                                    {
+                                        ingredients && Object.entries(ingredients).map(([cat, val]) => {
+                                            return (
+                                                <Card key={cat} className="border-left  rounded-right" >
+                                                    <Card.Header className=" list-group-item d-flex border-left-0 rounded-right
+                                                    align-items-center justify-content-between text-capitalize "
+                                                        style={{
+                                                            border: "1px solid var(--secondary)",
+                                                            backgroundColor: "var(--light)"
+                                                        }}
+                                                        onClick={() => setOpenDic(openDic => ({
+                                                            ...openDic,
+                                                            [cat]: !openDic[cat]
+                                                        }))}
+                                                        aria-controls={cat}
+                                                        aria-expanded={openDic[cat]}
 
-                                }}> 
-                                Ingredients
-                                
-                                </div>
-                            <div className="col-11 mx-0 px-0">
-                                {
-                                    ingredients && Object.entries(ingredients).map(([cat, val]) => {
-                                        return (
-                                            <Card key={cat} className=" border-left-0 rounded-right" >
-                                                <Card.Header className=" list-group-item d-flex border-left-0 rounded-right
-                                                   align-items-center justify-content-between text-capitalize"
-                                                    style={{
-                                                        border: "1px solid var(--secondary)",
-                                                        backgroundColor: "var(--light)"
-                                                    }}
-                                                    onClick={() => setOpenDic(openDic => ({
-                                                        ...openDic,
-                                                        [cat]: !openDic[cat]
-                                                    }))}
-                                                    aria-controls={cat}
-                                                    aria-expanded={openDic[cat]}
+                                                    >
+                                                        <div>
+                                                            <img src={match_img(cat)} alt="logo" style={{ height: '10%', width: '10%' }} />
+                                                            <span className='mx-3'>
+                                                                {cat}
+                                                            </span>
+                                                        </div>
 
-                                                >
-                                                    <div>
-                                                        <img src={match_img(cat)} alt="logo" style={{ height: '10%', width: '10%' }} />
-                                                        <span className='mx-3'>
-                                                            {cat}
-                                                        </span>
-                                                    </div>
+                                                        <div>
+                                                    { openDic[cat] ? <RiArrowDropUpLine className="h4" /> : <RiArrowDropDownLine className="h4" />}
+                                                        </div>
+                                                    </Card.Header >
+                                                    <Collapse in={openDic[cat]}>
 
-                                                    <div>
-                                                { openDic[cat] ? <RiArrowDropUpLine class="h4" /> : <RiArrowDropDownLine class="h4" />}
-                                                    </div>
-                                                </Card.Header >
-                                                <Collapse in={openDic[cat]}>
-
-                                                    <ul id={cat} className="list-group list-group-flush rounded-right">
-                                                        {
-                                                            val.map(ing =>
-                                                                <li className={"  list-group-item  justify-content-between rounded-right align-items-center text-capitalize "
-                                                                    + (showZeros || ing.value > 0 ? "d-flex" : " d-none")}
-                                                                    key={ing.id}
-                                                                    style={{
-                                                                        borderBottom: "1px solid var(--secondary)",
-                                                                        borderRight: "1px solid var(--secondary)",
-                                                                    }}
-                                                                >
-                                                                    <div>
-                                                                        {ing.name}
-                                                                    </div>
-                                                                    <div className="row px-0 mx-0 align-items-center">
-                                                                        <div className="mr-4 ">
-                                                                            <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit === "g" ? "gr" : ing.unit}
+                                                        <ul id={cat} className="list-group list-group-flush rounded-right">
+                                                            {
+                                                                val.map(ing =>
+                                                                    <li className={"  list-group-item  justify-content-between rounded-right align-items-center text-capitalize "
+                                                                        + (showZeros || ing.value > 0 ? "d-flex" : " d-none")}
+                                                                        key={ing.id}
+                                                                        style={{
+                                                                            borderBottom: "1px solid var(--secondary)",
+                                                                            borderRight: "1px solid var(--secondary)",
+                                                                        }}
+                                                                    >
+                                                                        <div>
+                                                                            {ing.name}
                                                                         </div>
-                                                                        <AmountSlider ingredient={ing}
-                                                                            onChange={(val) => handleIngValChange(val, ing.id, cat)}
-                                                                        />
-                                                                    </div>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    </ul>
-                                                </Collapse>
+                                                                        <div className="row px-0 mx-0 align-items-center">
+                                                                            <div className="mr-4 ">
+                                                                                <u>{noramlize_value(ing.value, ing.min, ing.max)}</u>{ing.unit === "g" ? "gr" : ing.unit}
+                                                                            </div>
+                                                                            <AmountSlider ingredient={ing}
+                                                                                onChange={(val) => handleIngValChange(val, ing.id, cat)}
+                                                                            />
+                                                                        </div>
+                                                                    </li>
+                                                                )
+                                                            }
+                                                        </ul>
+                                                    </Collapse>
 
 
 
-                                            </Card>
+                                                </Card>
+                                            )
+                                        }
                                         )
                                     }
-                                    )
-                                }
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
-                </div>
-                <div className="col-lg-9">
-                    
-                        <div>
-                            <div className="row justify-content-around">
-                                <div className="col-lg-3 ">
-                                    {/* <div className='row mx-0'  > */}
-                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
-                                        color: "var(--secondary)",
-                                        backgroundColor: "var(--primary)",
-                                        border: "1px solid var(--secondary)",
-                                        borderRadius: '0.5rem',
-
-                                    }}>Aroma{'\u00A0'}Intensity</div>
-                                    <div className=" mx-0 px-0">
-                                        < RadarChart data={aromas} title={"Aroma Intensity"} />
-                                    </div>
-                                    <div className="d-flex justify-content-center">
-                                        <p className={"font-weight-bold px-2 mt-2  "}
-                                            style={{
-                                                color: "var(--secondary)",
-                                                backgroundColor: "var(--primary)",
-                                                border: "1px solid var(--secondary)",
-                                                borderRadius: '0.5rem',
-
-                                            }}>
-                                            Aroma: {aromaScore}</p>
-                                    </div>
-
-
-                                    {/* </div> */}
-                                </div>
-                                <div className="col-lg-3 text-center">
-                                    {/* <div className='row mx-0'  > */}
-                                    <div className=" font-weight-bold my-2  text-center  align-self-strech" style={{
-                                        color: "var(--secondary)",
-                                        backgroundColor: "var(--primary)",
-                                        border: "1px solid var(--secondary)",
-                                        borderRadius: '0.5rem',
-
-                                    }}>Taste{'\u00A0'}Intensity</div>
-                                    <div className=" mx-0 px-0">
-                                        < RadarChart data={tastes} title={"Taste Intensity"} />
-                                    </div>
-                                    <div className="d-flex justify-content-center">
-                                        <p className={"font-weight-bold px-2 mt-2  "}
-                                            style={{
-                                                color: "var(--secondary)",
-                                                backgroundColor: "var(--primary)",
-                                                border: "1px solid var(--secondary)",
-                                                borderRadius: '0.5rem',
-
-                                            }}>
-                                            Taste: {tasteScore}</p>
-                                    </div>
-                                    {/* </div> */}
-                                </div>
-                                <div className="col-lg-5 ">
-                                    {/* <div className='row mx-0'  > */}
-                                    <div className=" font-weight-bold my-2  text-center text-break align-self-strech"
-                                        style={{
+                    <div className="col-lg-9">
+                            <div>
+                                <div className="row justify-content-around">
+                                    <div className="col-lg-3 ">
+                                        {/* <div className='row mx-0'  > */}
+                                        <div className=" font-weight-bold my-2  text-center text-break align-self-strech" style={{
                                             color: "var(--secondary)",
                                             backgroundColor: "var(--primary)",
                                             border: "1px solid var(--secondary)",
                                             borderRadius: '0.5rem',
 
-                                        }}>  Environmental Impact</div>
-                                    <div className=" mx-0 px-0">
-                                        < LineChart
-                                            dynamic_env_impact={envImpact}
-                                            env_impact_avg={envImpactAvgMetaReicpe}
-                                        />
+                                        }}>Aroma{'\u00A0'}Intensity</div>
+                                        <div className=" mx-0 px-0">
+                                            < RadarChart data={aromas} title={"Aroma Intensity"} />
+                                        </div>
+                                        <div className="col-12  text-center">
+                                            <img className="" src={aroma_indication()} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <div className="d-flex justify-content-center">
+                                                <p className={"d-flex font-weight-bold px-2 my-1  "}
+                                                    style={{
+                                                        color: "var(--secondary)",
+                                                        backgroundColor: "var(--primary)",
+                                                        border: "1px solid var(--secondary)",
+                                                        borderRadius: '0.5rem',
+
+                                                    }}>
+                                                        
+                                                    Aroma: {aromaScore}
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        {/* </div> */}
                                     </div>
-                                    <div className="d-flex justify-content-center">
-                                        <p className={"font-weight-bold px-2 mt-5  "}
+                                    <div className="col-lg-3 text-center">
+                                        {/* <div className='row mx-0'  > */}
+                                        <div className=" font-weight-bold my-2  text-center  align-self-strech" style={{
+                                            color: "var(--secondary)",
+                                            backgroundColor: "var(--primary)",
+                                            border: "1px solid var(--secondary)",
+                                            borderRadius: '0.5rem',
+
+                                        }}>Taste{'\u00A0'}Intensity</div>
+                                        <div className=" mx-0 px-0">
+                                            < RadarChart data={tastes} title={"Taste Intensity"} />
+                                        </div>
+                                        <div className="col-12  text-center">
+                                            <img className="" src={taste_indication()} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <div className="d-flex justify-content-center">
+                                                <p className={"d-flex font-weight-bold px-2 my-1  "}
+                                                    style={{
+                                                        color: "var(--secondary)",
+                                                        backgroundColor: "var(--primary)",
+                                                        border: "1px solid var(--secondary)",
+                                                        borderRadius: '0.5rem',
+
+                                                    }}>
+                                                        
+                                                    Taste: {tasteScore}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {/* </div> */}
+                                    </div>
+                                    <div className="col-lg-5 ">
+                                        {/* <div className='row mx-0'  > */}
+                                        <div className=" font-weight-bold my-2  text-center text-break align-self-strech"
                                             style={{
                                                 color: "var(--secondary)",
                                                 backgroundColor: "var(--primary)",
                                                 border: "1px solid var(--secondary)",
                                                 borderRadius: '0.5rem',
 
-                                            }}>
-                                            Sustaible: {sustainableScore}</p>
+                                            }}>  Environmental Impact</div>
+                                        <div className=" mx-0 px-0">
+                                            < LineChart
+                                                dynamic_env_impact={envImpact}
+                                                env_impact_avg={envImpactAvgMetaReicpe}
+                                            />
+                                        </div>
+                                        <div className="col-12  text-center ">
+                                            <img className="" src={sustaible_indication()} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <div className="d-flex justify-content-center">
+                                                <p className={"d-flex font-weight-bold px-2 my-1  "}
+                                                    style={{
+                                                        color: "var(--secondary)",
+                                                        backgroundColor: "var(--primary)",
+                                                        border: "1px solid var(--secondary)",
+                                                        borderRadius: '0.5rem',
+
+                                                    }}>
+                                                        
+                                                    Sustaible: {sustainableScore}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* </div> */}
                                     </div>
 
-                                    {/* </div> */}
                                 </div>
+                                {/* <div className=" row d-flex justify-content-center ">
+                                    <div className="col-md-6 text-center">
 
-                            </div>
-                            {/* <div className=" row d-flex justify-content-center ">
-                                <div className="col-md-6 text-center">
-
-                                    <div className="  mx-0 font-weight-bold  my-2  " style={{
-                                        color: "var(--secondary)",
-                                        backgroundColor: "var(--primary)",
-                                        border: "1px solid var(--secondary)",
-                                        borderRadius: '0.5rem',
-                                    }}>
-                                        Environmental Impact
+                                        <div className="  mx-0 font-weight-bold  my-2  " style={{
+                                            color: "var(--secondary)",
+                                            backgroundColor: "var(--primary)",
+                                            border: "1px solid var(--secondary)",
+                                            borderRadius: '0.5rem',
+                                        }}>
+                                            Environmental Impact
+                                        </div>
                                     </div>
                                 </div>
+                                <div className=" row d-flex justify-content-center ">
+                                    <div className="col-md-8 ">
+                                        < LineChart
+                                            dynamic_env_impact={envImpact}
+                                            env_impact_avg={envImpactAvgMetaReicpe}
+                                        />
+                                    </div>
+                                </div> */}
                             </div>
-                            <div className=" row d-flex justify-content-center ">
-                                <div className="col-md-8 ">
-                                    < LineChart
-                                        dynamic_env_impact={envImpact}
-                                        env_impact_avg={envImpactAvgMetaReicpe}
-                                    />
-                                </div>
-                            </div> */}
-                        </div>
-                         
-                        
+                    </div>
                 </div>
+            
             </div>
             
-            :   <div className="d-flex justify-content-center">
+            :  
+             <div className="d-flex justify-content-center">
                             <Spinner animation="border" role="status" >
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
-                        </div>}
+                </div>}
 
 
         </div >
