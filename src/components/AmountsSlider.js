@@ -1,23 +1,54 @@
-import React , { useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { withStyles, makeStyles , createStyles} from '@material-ui/core/styles';
+import { EventInjector } from 'react-event-injector'
 // import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
-const useStyles = makeStyles((theme) => ({
+
+const StyledSlider = withStyles({
   root: {
-    height: '5vh',
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-   rail: {
-    height: 2,
-    opacity: 0.5,
-    backgroundColor: '#bfbfbf',
-  },
+    border: 0,
+    color: '#2f1544;',
 
 
-}));
+  },
+  mark: {
+    backgroundColor: '#2f1544',
+    height: 1,
+    width: 11,
+    marginLeft: -5,
+    marginTop: 0,
+    borderRadius: 1
+  },
+  track: {
+    width: 1
+
+  },
+  thumb: {
+    color: '#2f1544;',
+    borderRadius: 0,
+    height: 3,
+    width: 14,
+    borderRadius: 10
+
+
+  },
+  rail: {
+    width: 1,
+    backgroundColor: '#2f1544',
+    color: '#2f1544',
+    opacity: 1
+  },
+
+  markLabel: {
+    fontSize: 12,
+    marginLeft: 0,
+    marginTop: -6
+  }
+
+
+})(Slider);
+
 
 
 
@@ -25,12 +56,21 @@ function valuetext(value) {
   return `${value} `;
 }
 
+const useStyles = makeStyles(theme => ({
+  margin: {
+    "& .MuiSlider-thumb": {
+      marginLeft : -6 ,
+      marginRight : -2,
+      marginBottom : 0
+    }
+  }
+}));
 
-export default function MySLider(props) {
-  const [ingredient, setIngredient] = useState(props.ingredient);
+export default function AmountSLider(props) {
+  const { ingredient } = props;
   // const [sliderValue, setSLiderValue] = useState(props.ingredient.kosher_value * (ingredient.max - ingredient.min) + ingredient.min );
-  const [sliderValue, setSLiderValue] = useState(props.ingredient.value );
-
+  const [sliderValue, setSLiderValue] = useState(props.ingredient.value);
+  const classes = useStyles();
 
   const handleChange = (e, newVal) => {
     // let v = newVal / (ingredient.max - ingredient.min)
@@ -38,7 +78,8 @@ export default function MySLider(props) {
     props.onChange(newVal)
   }
 
- 
+  
+
 
 
   const marks = [
@@ -62,30 +103,33 @@ export default function MySLider(props) {
       value: 1,
     },
   ];
-  
-  const classes = useStyles();
+
+  // const classes = useStyles();
 
 
   return (
-    <div className={classes.root}>
-      <Slider
-        value = {sliderValue}
+    <div className={classes.margin} style={{ height: '6vh' ,   float: 'right'
+  }}>
+
+
+      <StyledSlider
+        
+        value={sliderValue}
         orientation="vertical"
 
-        onChange = {handleChange}
+        onChange={handleChange}
         getAriaValueText={valuetext}
         aria-labelledby="vertical-slider"
         step={0.01}
         // min = {ingredient.min}
         // max = {ingredient.max}
-        min = {0}
-        max = {1}
+        min={0}
+        max={1}
         // valueLabelDisplay="auto"
         marks={marks}
-        
+
 
       />
-
     </div>
   );
 }

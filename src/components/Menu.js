@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import lettuce_wrap_icon from '../images/lettuce-wrap.png';
-import stir_fry_icon from '../images/stir-fry.png';
-import carrot_cake_icon from '../images/carrot-cake.png';
-import { Spinner } from 'react-bootstrap';
+import React from "react";
+import lettuceWrapIcon from '../images/lettuce-wrap.png';
+import stirFryIcon from '../images/stir-fry.png';
+import carrotCakeIcon from '../images/carrot-cake.png';
 
 
 
-export default function Menu(props) {
-    const [menu, setMenu] = useState(props.data);
+export default function Menu({data , pickRecipe}) {
 
-    const match_img = (dish_name) => {
+    const matchImg = (dish_name) => {
         if (dish_name.startsWith('Lettuce')) {
-            return lettuce_wrap_icon;
+            return lettuceWrapIcon;
         } else if (dish_name.startsWith('Stir')) {
-            return stir_fry_icon;
+            return stirFryIcon;
         } else {//  == carrot 
-            return carrot_cake_icon;
+            return carrotCakeIcon;
         }
     }
 
@@ -26,16 +24,15 @@ export default function Menu(props) {
 
                 {
 
-                    menu.map(item =>
+                    data.map(item =>
                         <div className="col-lg-3 col-md-4 col-sm-5  " key={item.id} >
-                            <div className="card my-3 text-center " style={{ borderColor: "var(--secondary)", borderRadius: "30px" }}  >
-                                {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
+                            <div className="card my-3 text-center choice-card"  >
                                 <div className="card-body p-1">
-                                    <h5 className="card-title font-weight-bold m-1" style={{ color: "var(--secondary)" }}>{item.name}</h5>
+                                    <h5 className="card-title font-weight-bold m-1 my-purple" >{item.name}</h5>
 
                                     <small className="text-muted">
-                                        <button type="button" className="btn p-1 " onClick={() => props.pickRecipe(item)}>
-                                            <img src={match_img(item.name)} alt="dish icon" style={{ height: "50%", width: "50%" }} />
+                                        <button type="button" className="btn p-1 " onClick={() => pickRecipe(item)}>
+                                            <img src={matchImg(item.name)} alt="dish icon" style={{ height: "50%", width: "50%" }} />
                                         </button>
                                     </small>
                                 </div>

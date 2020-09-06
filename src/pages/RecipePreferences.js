@@ -4,7 +4,6 @@ import DietRestriction from '../components/DietRestriction.js';
 import Control from '../components/Control.js';
 import ServiceApi from "../services/ServiceApi.js";
 import { Spinner } from 'react-bootstrap';
-// import Navigation from '../navigation.js';
 import TopPanel from "../components/top-panel.js";
 
 
@@ -14,14 +13,12 @@ export default function RecipePreferences() {
     const [title, setTitle] = useState("Menu");
     const [choosedRecipe, setchoosedRecipe] = useState(null);
     const [choosedDiet, setChoosedDiet] = useState(null);
-    const [showZeros, setShowZeros] = useState(false);
     const [menu, setMenu] = useState();
     const [step, setStep] = useState("menu");
-    const [loadMenu, setLoadMenu] = useState(true);
 
 
     useEffect(() => {
-        const get_menu = async () => {
+        const getMenu = async () => {
             ServiceApi.retrieveMenu().then(data => {
                 setMenu(data);
             })
@@ -30,8 +27,7 @@ export default function RecipePreferences() {
                 });
 
         };
-        get_menu();
-        setLoadMenu(false);
+        getMenu();
     }, []);
 
 
@@ -58,8 +54,8 @@ export default function RecipePreferences() {
 
     }
 
-    const replace_diet = () => {
-        if(choosedRecipe) {
+    const replaceDiet = () => {
+        if (choosedRecipe) {
             setChoosedDiet(null);
             setTitle("Diet");
             setStep("diet")
@@ -70,32 +66,25 @@ export default function RecipePreferences() {
 
     return (
         <div>
-             <TopPanel restart={restart} replace_diet={replace_diet} step={step} />
+            <TopPanel restart={restart} replaceDiet={replaceDiet} step={step} />
             <div className="container-fluid">
 
-                    <header className="row  align-items-center mx-0 justify-content-center" >
-                        <div style={{ color: "var(--secondary)" }}>
-                         {/* <h3>
-                            { choosedRecipe && choosedRecipe.name}  {choosedDiet && '\u0026'} { choosedDiet && choosedDiet}
-                         </h3> */}
-                        
-                        </div>
-                        
-                        <div 
-                        className={"display-4   align-self-center   text-uppercase font-weight-bold mt-3 " + 
-                                    (title !== 'Dish' ? 'mb-md-3 mb-sm-1 ' : '')} 
+                <header className={"text-center mt-3 " + (title !== 'Dish' ? 'mb-md-1 mb-sm-1 ' : '') } >
+
+                    <div
+                        className={"display-4   align-self-center   text-uppercase font-weight-bold  " }
                         style={{ color: "var(--secondary)" }}>
-                            {title}
-                        </div>
-                        {/* <div >
-                        {choosedRecipe && choosedDiet && ''
-                            }
-                            </div> */}
+                        {title}
+                    </div>
+                    <div style={{ color: "var(--secondary)" }}>
+                        <h3>
+                            {choosedRecipe && choosedRecipe.name}  {choosedDiet && '\u0026'} {choosedDiet && choosedDiet}
+                        </h3>
+
+                    </div>
+                </header>
 
 
-                    </header>
-
-                
             </div>
             <div>
                 {!menu && <div className="d-flex justify-content-center">
@@ -107,7 +96,7 @@ export default function RecipePreferences() {
                     <Menu data={menu} pickRecipe={pickRecipe} />
                 }
                 {choosedRecipe && menu && !choosedDiet && <DietRestriction dietCLick={dietCLick} />}
-                {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} zeros={showZeros} />}
+                {choosedRecipe && menu && choosedDiet && <Control recipe={choosedRecipe} diet={choosedDiet} />}
             </div>
         </div>
 

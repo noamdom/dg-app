@@ -4,111 +4,106 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles((theme) => ({
+const StyledSlider = withStyles({
   root: {
-    width: 300 + theme.spacing(3) * 2,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
+    border: 0,
+    color: '#2f1544;',
 
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
 
-  return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
+  },
+  mark : {
+    backgroundColor: '#2f1544',
+    height: 10,
+    width: 1,
+    marginLeft: 0,
+    marginTop: -4,
+    borderRadius: 1
+  } , 
+  track : {
+    // color: '#2f1544;',
+    // width: 1,
+    // marginTop:-1
+    // marginTop:
+    height:1
 
-ValueLabelComponent.propTypes = {
-  children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
-  value: PropTypes.number.isRequired,
-};
+  } , 
+  thumb : {
+    color: '#2f1544;',
+    borderRadius: 0,
+    height: 14,
+    width:3,
+    marginTop: -6,
+    marginLeft: -0.5,
+    borderRadius: 10
 
-const iOSBoxShadow =
-'0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 
-const marks = [
-  {
-    value: 0,
-  },
-  {
-    value: 50,
-  },
-  {
-    value: 80,
-  },
-  {
-    value: 100,
-  },
-];
-
-const IOSSlider = withStyles({
-  root: {
-    color: '#3880ff',
-    height: 2,
-    padding: '15px 0',
-  },
-  thumb: {
-    height: 28,
-    width: 28,
-    backgroundColor: '#fff',
-    boxShadow: iOSBoxShadow,
-    marginTop: -14,
-    marginLeft: -14,
-    '&:focus, &:hover, &$active': {
-      boxShadow: '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        boxShadow: iOSBoxShadow,
-      },
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 12px)',
-    top: -22,
-    '& *': {
-      background: 'transparent',
-      color: '#000',
-    },
-  },
-  track: {
-    height: 2,
   },
   rail: {
-    height: 2,
-    opacity: 0.5,
-    backgroundColor: '#bfbfbf',
+    height: 1,
+    backgroundColor: '#2f1544',
+    color: '#2f1544',
+    opacity:1
   },
-  mark: {
-    backgroundColor: '#bfbfbf',
-    height: 8,
-    width: 1,
-    marginTop: -3,
-  },
-  markActive: {
-    opacity: 1,
-    backgroundColor: 'currentColor',
-  },
+
+  markLabel : {
+    fontSize:6,
+    marginLeft: 0,
+    marginTop:-6
+  }
+
+  
 })(Slider);
 
 
 
 
-export default function CustomizedSlider() {
-  const classes = useStyles();
+const marks = [
+  {
+    // value: ingredient.min,
+    label: 5,
+    value: 0,
+  },
 
+  {
+    value: 0.25,
+  },
+  {
+    value: 0.50,
+  },
+  {
+    value: 0.75,
+  },
+  {
+    label: 100,
+    value: 1,
+  },
+];
+
+
+export default function ClassesShorthand() {
   return (
-    <div className={classes.root}>
-      <Typography gutterBottom>iOS</Typography>
-      <IOSSlider aria-label="ios slider" defaultValue={60} marks={marks} valueLabelDisplay="on" />
-      <div className={classes.margin} />
+
+    <div className="container my-5" style={{height: "50vh"}} >
+      <StyledSlider className=""
+
+        step={0.01}
+        // value={0}
+        // orientation="vertical"
+
+
+        // min = {ingredient.min}
+        // max = {ingredient.max}
+        min={0}
+        max={1}
+        // valueLabelDisplay="auto"
+        marks={marks}
+
+
+      />
     </div>
-  );
+  )
 }
