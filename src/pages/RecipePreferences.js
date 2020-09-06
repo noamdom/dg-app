@@ -4,7 +4,7 @@ import DietRestriction from '../components/DietRestriction.js';
 import Control from '../components/Control.js';
 import ServiceApi from "../services/ServiceApi.js";
 import { Spinner } from 'react-bootstrap';
-import TopPanel from "../components/top-panel.js";
+import TopPanel from "../components/TopPanel.js";
 
 
 

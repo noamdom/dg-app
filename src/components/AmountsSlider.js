@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { withStyles, makeStyles , createStyles} from '@material-ui/core/styles';
-import { EventInjector } from 'react-event-injector'
-// import Typography from '@material-ui/core/Typography';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 
 
@@ -26,7 +24,6 @@ const StyledSlider = withStyles({
   },
   thumb: {
     color: '#2f1544;',
-    borderRadius: 0,
     height: 3,
     width: 14,
     borderRadius: 10

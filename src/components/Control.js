@@ -4,26 +4,21 @@ import LineChart from './LineChart.js'
 import AmountSlider from '../components/AmountsSlider.js'
 import ServiceApi from "../services/ServiceApi.js";
 import { Collapse, Card, Spinner } from 'react-bootstrap';
-// import { groupBy } from 'lodash';
 import { std } from 'mathjs';
 
-// functions
+// ------- functions ------------------
 import * as helper from './functions/control-functions'
 
 // ------- icons ----------------------
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri'
 
-// constants
-
+// ------- constants ------------------
 const DIGIT_AFTER_POINT = 100
 const WATER_FACTOR = 0.1
 
-export default function Control(props) {
-    // const [title, setTitle] = useState("Process");
-    // const [isLoading, SetIsLoading] = useState(true);
-    // const [pickedDiet, setPickedDiet] = useState(customDietName(props.diet));
-    const pickedDiet = helper.customDietName(props.diet)
 
+export default function Control(props) {
+    const pickedDiet = helper.customDietName(props.diet)
     const [pickedRecipe, setPickedRecipe] = useState(props.recipe);
     const [ingredients, setIngredients] = useState([]);
     const [dynamicIngredients, setDynamicIngredients] = useState([]);
@@ -34,19 +29,13 @@ export default function Control(props) {
     const [aromaScore, setAromaScore] = useState(0)
     const [tasteScore, setTasteScore] = useState(0)
     const [showZeros, setShowZeros] = useState(false);
-
-
     const [metaRecipe, setMetaRecipe] = useState()
     const [envImpactAvgMetaReicpe, setEnvImpactAvgMetaReicpe] = useState()
     const [envImpact, setEnvImpact] = useState()
 
-
-
-
     const getRecipe = () => {
         ServiceApi.retrieveRecipe(pickedRecipe.id).then(data => {
             setMetaRecipe(data)
-            // setTitle(data.name);
             setEnvImpactAvgMetaReicpe(data.env_impact_avg)
             setPickedRecipe(data);
 
@@ -59,8 +48,6 @@ export default function Control(props) {
 
                 }
             }
-
-
         })
             .catch(err => {
                 console.log(err);
@@ -84,7 +71,6 @@ export default function Control(props) {
 
             const aromasAvg = {};
             const avgFactor = 1 / size;
-
             const flatIngs = Object.values(ingredients).flat()
 
             flatIngs.forEach(ing => {
