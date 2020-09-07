@@ -396,7 +396,7 @@ export default function Control(props) {
                                             />
                                         </div>
                                         <div className="col-12  align-self-end text-center mt-2">
-                                            <img className="" src={helper.sustaibleIndication(sustainableScore)} style={{ height: "15vh", width: "15vh", }} alt='logo' />
+                                            <img className="" src={helper.sustaibleIndication(sustainableScore)} style={{ height: "17vh", width: "12.5vh", }} alt='logo' />
                                             <div className="d-flex justify-content-center">
                                                 <p className={"d-flex font-weight-bold px-2 my-1 my-title "}>
 

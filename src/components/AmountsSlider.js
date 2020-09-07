@@ -65,7 +65,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function AmountSLider(props) {
   const { ingredient } = props;
-  // const [sliderValue, setSLiderValue] = useState(props.ingredient.kosher_value * (ingredient.max - ingredient.min) + ingredient.min );
   const [sliderValue, setSLiderValue] = useState(props.ingredient.value);
   const classes = useStyles();
 
@@ -83,7 +82,7 @@ export default function AmountSLider(props) {
     {
       // value: ingredient.min,
       label: ingredient.min,
-      value: 0,
+      value: 0.0,
     },
 
     {
@@ -118,11 +117,8 @@ export default function AmountSLider(props) {
         getAriaValueText={valuetext}
         aria-labelledby="vertical-slider"
         step={0.01}
-        // min = {ingredient.min}
-        // max = {ingredient.max}
-        min={0}
+        min={0.0000001}
         max={1}
-        // valueLabelDisplay="auto"
         marks={marks}
 
 

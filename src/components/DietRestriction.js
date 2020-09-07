@@ -22,12 +22,12 @@ export default function DietRestriction({ dietCLick }) {
 
             <div className="card-deck justify-content-around" > {
                 types.map((item, idx) =>
-                    <div className="col-lg-3 col-md-4 col-sm-5  "
+                    <div className="col-lg-3 offset-lg-0 col-md-4 offset-md-0 col-sm-8  offset-sm-1  "
                         key={idx} >
                         <div className="card my-3 text-center choice-card"
                              >
 
-                            <div className="card-body p-1" >
+                            <div className="card-body p-1 text-center" >
                                 <h4 className="card-title font-weight-bold m-1 my-purple" > {item} </h4> <button type="button"
                                     className="btn p-1 "
                                     onClick={

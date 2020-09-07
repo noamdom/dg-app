@@ -25,7 +25,7 @@ export default function Menu({data , pickRecipe}) {
                 {
 
                     data.map(item =>
-                        <div className="col-lg-3 col-md-4 col-sm-5  " key={item.id} >
+                        <div className="col-lg-3 offset-lg-0 col-md-4 offset-md-0 col-sm-8  offset-sm-1 " key={item.id} >
                             <div className="card my-3 text-center choice-card"  >
                                 <div className="card-body p-1">
                                     <h5 className="card-title font-weight-bold m-1 my-purple" >{item.name}</h5>
