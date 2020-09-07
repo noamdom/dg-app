@@ -3,7 +3,7 @@
     "name": "Recipe analyzer",
     "icons": [
         {
-            "src": "/logo-666x666.png",
+            "src": "/logo-512x512.png",
             "sizes": "512*512",
             "type": "image/png",
             "purpose": "any"
