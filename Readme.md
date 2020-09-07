@@ -35,19 +35,19 @@ prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visual
 [flavorDB web](https://cosylab.iiitd.edu.in/flavordb/search)
 
 Note: 
-The code for analyze the aroma data can be found here: https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
+The code to analyze the aroma data can be found here: https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
 
 ###  Environmental Impact - In Science
-* [info](https://science.sciencemag.org/content/363/6429/eaaw9908)
+* [Info](https://science.sciencemag.org/content/363/6429/eaaw9908)
 * [Article](https://josephpoore.com/Science%20360%206392%20987%20-%20Accepted%20Manuscript.pdf)
 * [Supplementary Materials](https://science.sciencemag.org/content/suppl/2018/05/30/360.6392.987.DC1)
 
 ### 
 
 # Thanks
-* Shimon Heimowitz , Prof. Amit Zoran 
+* Shimon Heimowitz , Prof. Amit Zoran - Advisers
 * Emiliano Arencibia Gonzalez 
-* Vered Domovich & Eylam - UI design
+* Vered Domovich & Eylam sclar - UI design
 
 
 
