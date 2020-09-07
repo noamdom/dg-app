@@ -9,7 +9,7 @@ The frontend code [you can find here](https://github.com/noamdom/dg-app/tree/fro
 The backend code [you can find here](https://github.com/noamdom/dg-app/tree/backend)
 
 
-#  background
+#  Background
 This app my final project of my BA studies, and it's a cooperation 
 with [Hybrid Lab, The School of Computer 
 Science and Engineering in The Hebrew University of Jerusalem.](http://digitalgastronomy.co/)
@@ -32,6 +32,7 @@ prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visual
 # References
 ###  Aroma data - flavor DB
 [flavorDB web](https://cosylab.iiitd.edu.in/flavordb/search)
+
 note: The code for analyze the aroma data can be found here: 
 https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
 
