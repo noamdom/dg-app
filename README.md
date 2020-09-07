@@ -4,9 +4,13 @@ You can try it yourself in [netlify](https://tender-tesla-6d5acb.netlify.app/)
 or download from []()
 
 # Description
-This app will analzye your recipe, During the process you tell the app what dish 
-you wish (Lettuce warp/Stir Fry/ Carrot cake) to eat, and what type of reicpe you 
-prefer (Kosher/Vegan/Ketogenic) and the app will give a visalsion  
+This app will analzye your recipe.
+During the process you will tell the app what dish 
+you wish (Lettuce warp \ Stir Fry \ Carrot cake) to eat, and what type of reicpe you 
+prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visualization and feeling how the  recipe's ingredinets impact on the:
+* Aroma intesity status
+* Taste intesity staus
+* Environmental Impact
 
 
 
@@ -21,10 +25,9 @@ prefer (Kosher/Vegan/Ketogenic) and the app will give a visalsion
 
 
 
+## Get strated
 
 
+### `npm install`
 
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Will download and install all library require 
