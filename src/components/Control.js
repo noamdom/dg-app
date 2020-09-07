@@ -63,8 +63,11 @@ export default function Control(props) {
     }, []);
 
 
-
-
+    /**
+     * For each ingredient the function calculate the aroma intesity by catogory (Mint, Woddy , etc.) and the avarage between 
+     * all the recipe ingredient . It's build a dictionary with the final catogry avg value for the the Aroma intesity chart
+     * And finally it's compute the one number score by standard deviation for Aroma score
+     */
     const calculateAromasAvarge = () => {
         let size = Object.keys(ingredients).length;
         if (size > 0) {
@@ -74,7 +77,7 @@ export default function Control(props) {
             const flatIngs = Object.values(ingredients).flat()
 
             flatIngs.forEach(ing => {
-                if (ing.value > 0) {
+                if (ing.value > 0) {  // ing == 0 <=> zero the equation
                     let factor = helper.noramlizeValue(ing.value, ing.min, ing.max);
 
                     // filter out none arome data:
@@ -98,7 +101,11 @@ export default function Control(props) {
     };
 
 
-
+    /**
+    * For each ingredient the function calculate the Taste intesity by catogory (Salty, Sour, etc.) and the avarage between 
+    * all the recipe ingredient . It's build a dictionary with the final catogry avg value for the the Taste intesity chart
+    * And finally it's compute the one number score by standard deviation for Taste score
+    */
     const calculateTasteAvarge = () => {
         let size = Object.keys(ingredients).length;
         if (size > 0) {
@@ -107,7 +114,7 @@ export default function Control(props) {
             const avgFactor = 1 / size;
             const flatIngs = Object.values(ingredients).flat()
             flatIngs.forEach(ing => {
-                if (ing.value > 0) {
+                if (ing.value > 0) { // ing == 0 <=> zero the equation
                     let factor = helper.noramlizeValue(ing.value, ing.min, ing.max);
 
                     // filter out none arome data:
@@ -132,7 +139,10 @@ export default function Control(props) {
 
 
 
-
+    /**
+     * For each ingredient the function calculate the Environmental Impact by catogory (land_use, ghg , etc.) and the avarage between 
+     * all the recipe ingredient . It's build a dictionary with the final catogry avg value for the  Environmental Impact chart
+     */
     const calculateEnvImpactAvarge = () => {
         if (envImpactAvgMetaReicpe) {
 
@@ -171,6 +181,10 @@ export default function Control(props) {
 
     };
 
+    /**
+     *  build a hepler object (dict) with the ingredint's category title, for Show/Hide zere btn
+     */
+
     const getCategoryTitles = () => {
         let categoryDic = {}
 
@@ -182,8 +196,10 @@ export default function Control(props) {
 
         }
     }
-
-    const calculateScore = () => {
+/**
+ * It's compute the one number scorre for Sustiable score by avg of gap between metercipe and dish footprint values
+ */
+    const calculateSustainbleScore = () => {
         if (envImpactAvgMetaReicpe && envImpact) {
             let sum = 0;
             for (const key of Object.keys(envImpact)) {
@@ -200,15 +216,11 @@ export default function Control(props) {
         calculateAromasAvarge();
         calculateTasteAvarge();
         calculateEnvImpactAvarge();
-
-
-        // SetIsLoading(false);
-
     }, [ingredients, metaRecipe, envImpactAvgMetaReicpe])
 
 
     useEffect(() => {
-        calculateScore()
+        calculateSustainbleScore()
 
     }, [envImpactAvgMetaReicpe, envImpact])
 
@@ -217,9 +229,13 @@ export default function Control(props) {
         getCategoryTitles()
     }, []);
 
-
+/**
+ *  update the new value for the ingredient by user request
+ * @param {float} val = number in [0,1]
+ * @param {int} id = id of ingredient in recipe
+ * @param {string} cat = category name
+ */
     const handleIngValChange = (val, id, cat) => {
-        // let b = ingredients[cat];
         let c = ingredients[cat].map(ing => {
             return (
                 ing.id === id

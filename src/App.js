@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Tests from '../pages/Tests.js';
-import RecipePreferences from '../pages/RecipePreferences.js';
-import NotFound from '../pages/NotFoundPage'
-import '../css/App.css';
+import Tests from './pages/Tests.js';
+import RecipePreferences from './pages/RecipePreferences.js';
+import NotFound from './pages/NotFoundPage'
+import './css/App.css';
 
 class App extends Component {
   render() {

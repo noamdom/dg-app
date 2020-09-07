@@ -52,8 +52,13 @@ export const matchImg = (dish_name) => {
     }
 }
 
-
-export  const sustaibleIndication = (sustainableScore) => {
+/**
+ *  Becuase the logic behind the avg a negitive number will be good indication and positive will be bad indication.
+ *  The numbers is just for split between the option is just for feeling and should have more resreach about what is 
+ *  a logical number  - that why the don't in magic number
+ * @param {float} sustaibleIndication 
+ */
+export const sustaibleIndication = (sustainableScore) => {
     if (sustainableScore < -3) {
         return best_sustainable
     } else if (sustainableScore < 3) {
@@ -61,11 +66,16 @@ export  const sustaibleIndication = (sustainableScore) => {
     } else {
         return worst_sustainable
     }
-} 
+}
 
 
 
-
+/**
+ *  Becuase the logic behind standard deviation a low number will be good indication and hig number will be bad indication.
+ *  The numbers is just for split between the option is just for feeling and should have more resreach about what is 
+ *  a logical number  - that why the don't in magic number
+ * @param {float} aromaScore - the standard deviation of  aroma catogeries intesity
+ */
 export const aromaIndication = (aromaScore) => {
     if (aromaScore <= 1) {
         return best_aroma
@@ -75,7 +85,12 @@ export const aromaIndication = (aromaScore) => {
         return worst_aroma
     }
 }
-
+/**
+ *  Becuase the logic behind standard deviation a low number will be good indication and hig number will be bad indication.
+ *  The numbers is just for split between the option is just for feeling and should have more resreach about what is 
+ *  a logical number  - that why the don't in magic number
+ * @param {float} tasteScore 
+ */
 export const tasteIndication = (tasteScore) => {
     if (tasteScore <= 1) {
         return best_taste
@@ -87,7 +102,10 @@ export const tasteIndication = (tasteScore) => {
 }
 
 
-
+/**
+ * reduce the ingredint to catorgries
+ * @param {object} ingredient_data 
+ */
 export const cateogryReduce = (ingredient_data) => {
     let result = {};
     Object.values(ingredient_data).map(ing => {
@@ -105,13 +123,10 @@ export const cateogryReduce = (ingredient_data) => {
             key.startsWith('meat') ||
             key.startsWith('dairy') ||
             key.startsWith('animalproduct')) {
-                return 'animalproduct' in result ? 
-                    result['animalproduct'].push(ing)
-                    : result['animalproduct'] = [ing];
+            return 'animalproduct' in result ?
+                result['animalproduct'].push(ing)
+                : result['animalproduct'] = [ing];
         }
-        // else if (key.startsWith('dairy') || key.startsWith('animalproduct')) {
-        //     'dairy / animalproduct' in result ? result['dairy / animalproduct'].push(ing) : result['dairy / animalproduct'] = [ing];
-        // }
         else {
             return 'dish' in result ? result['dish'].push(ing) : result['dish'] = [ing];
             // key in result ? result[key].push(ing) : result[key] = [ing];
@@ -123,21 +138,40 @@ export const cateogryReduce = (ingredient_data) => {
 
 
 
-
+/**
+ *  return a noramlize value in the range of [min,max] for quantity in recipe
+ * @param {flaot} val in [0,1]  
+ * @param {float} min - The minimum quantity of ingredint in recipe
+ * @param {*} max - The maximum quantity of ingredint in recipe
+ */
 export function noramlizeValue(val, min, max) {
     return (val * (max - min) + min).toFixed(1)
 }
 
-
+/**
+ * return the aroma score for single ingredient
+ * @param {float} aromaIntensity - Aroma intesitny by category
+ * @param {float} ingFactor - a noramlize value of ingredint in recipe
+ */
 export function computeAromaScore(aromaIntensity, ingFactor) {
     return aromaIntensity * ingFactor;
 }
 
-
+/**
+ * return the aroma score for single ingredient
+ * @param {float} tasteIntensity - Taste intesitny by category
+ * @param {float} ingFactor - a noramlize value of ingredint in recipe
+ */
 export function computeTasteScore(tasteIntensity, ingFactor) {
     return tasteIntensity * ingFactor;
 }
 
+/**
+ * return the Environmental Impact value for single ingredient
+ * @param {flaot} envScore - Environmental Impact by category
+ * @param {float} ingFactor - a noramlize value of ingredint in recipe
+ * @param {float} convertor - from KG/L/ML to g
+ */
 export function computeEnvImpactScore(envScore, ingFactor, convertor) {
     return envScore * ingFactor * convertor
 }

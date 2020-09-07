@@ -7,8 +7,6 @@ import { Spinner } from 'react-bootstrap';
 import TopPanel from "../components/TopPanel.js";
 
 
-
-
 export default function RecipePreferences() {
     const [title, setTitle] = useState("Menu");
     const [choosedRecipe, setchoosedRecipe] = useState(null);
@@ -41,8 +39,6 @@ export default function RecipePreferences() {
         setChoosedDiet(diet);
         setTitle("Dish");
         setStep("dish")
-
-
 
     }
 
