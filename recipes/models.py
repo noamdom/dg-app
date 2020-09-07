@@ -79,12 +79,7 @@ class SingleRecipeIngredient(models.Model):
 
 
 """
-https://josephpoore.com/Science%20360%206392%20987%20-%20Accepted%20Manuscript.pdf
-fu - page 5 :
-https://science.sciencemag.org/content/sci/suppl/2018/05/30/360.6392.987.DC1/aaq0216-Poore-SM-revision1.pdf
 
-data - data S2:
-https://science.sciencemag.org/content/suppl/2018/05/30/360.6392.987.DC1
 
 Land Use (m2/FU)
 GHG Emissions (kg CO2eq/FU, IPCC 2013 incl. CC feedbacks)
