@@ -21,7 +21,7 @@ export default function Control(props) {
     const pickedDiet = helper.customDietName(props.diet)
     const [pickedRecipe, setPickedRecipe] = useState(props.recipe);
     const [ingredients, setIngredients] = useState([]);
-    const [dynamicIngredients, setDynamicIngredients] = useState([]);
+    const [originalIngredients, setOriginalIngredients] = useState([]);
     const [aromas, setAromas] = useState();
     const [tastes, setTastes] = useState();
     const [openDic, setOpenDic] = useState({});
@@ -43,7 +43,7 @@ export default function Control(props) {
             for (const recipe of data.recipes) {
                 if (recipe.diet === pickedDiet) {
                     setIngredients(helper.cateogryReduce(recipe.ingredients));
-                    setDynamicIngredients(recipe.ingredients);
+                    setOriginalIngredients(recipe.ingredients);
 
 
                 }
@@ -250,14 +250,14 @@ export default function Control(props) {
     return (
         <div className="container-fluid ">
 
-            {aromas && envImpact && envImpactAvgMetaReicpe && tastes ?
+            {aromas && envImpact && envImpactAvgMetaReicpe && tastes && ingredients ?
                 <div>
 
 
                     <div className="row">
                         <div className="col-lg-3 ">
                             <div className="row  justify-content-start mb-2" >
-                                <div onClick={() => setIngredients(helper.cateogryReduce(dynamicIngredients))}
+                                <div onClick={() => setIngredients(helper.cateogryReduce(originalIngredients))}
                                     className="mr-1 ml-3 my-1 pt-1 px-3 control-btn">Reset
                                     </div>
                                 <div className="mx-1 my-1 pt-1 px-3 control-btn"
@@ -323,8 +323,8 @@ export default function Control(props) {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div className="col justify-content-end px-0 mx-0">
-                                                                                            <AmountSlider ingredient={ing}
-                                                                                                onChange={(val) => handleIngValChange(val, ing.id, cat)}
+                                                                                            <AmountSlider ingredient={ing} val={ing.value}
+                                                                                                onChange={(val) => handleIngValChange(val, ing.id, cat) }
                                                                                             />
                                                                                         </div>
                                                                                     </div>

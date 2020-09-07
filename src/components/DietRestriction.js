@@ -5,7 +5,7 @@ import ketogenic_icon from '../images/ketogenic-icon.png'
 
 
 export default function DietRestriction({ dietCLick }) {
-    const types = [ 'Katogenic', 'Kosher', 'Vegan'];
+    const types = [ 'Vegan' , 'Kosher' ,'Katogenic'];
 
     const matchImg = (dish_name) => {
         if (dish_name.startsWith('Kosher')) {

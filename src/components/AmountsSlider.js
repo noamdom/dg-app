@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 
@@ -64,8 +64,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AmountSLider(props) {
-  const { ingredient } = props;
-  const [sliderValue, setSLiderValue] = useState(props.ingredient.value);
+  // const { ingredient } = props;
+  const [ingredient, setingredient] = useState(props.ingredient)
+  const [sliderValue, setSLiderValue] = useState(props.val);
   const classes = useStyles();
 
   const handleChange = (e, newVal) => {
@@ -100,6 +101,11 @@ export default function AmountSLider(props) {
     },
   ];
 
+
+  useEffect(() => {
+    setSLiderValue(props.val)
+  }, [props.val])
+
   // const classes = useStyles();
 
 
@@ -109,7 +115,7 @@ export default function AmountSLider(props) {
 
 
       <StyledSlider
-        
+        key={ingredient.id}
         value={sliderValue}
         orientation="vertical"
 
