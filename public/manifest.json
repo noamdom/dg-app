@@ -3,9 +3,10 @@
     "name": "Recipe analyzer",
     "icons": [
         {
-            "src": "/icon-logo.png",
+            "src": "/logo-666x666.png",
             "sizes": "666*666",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         }
     ],
     "start_url": ".",
