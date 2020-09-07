@@ -10,31 +10,32 @@ The backend code [you can find here](https://github.com/noamdom/dg-app/tree/back
 
 
 #  Background
-This app my final project of my BA studies, and it's a cooperation 
+This app is my final project of my BA studies, and it's a cooperation 
 with [Hybrid Lab, The School of Computer 
-Science and Engineering in The Hebrew University of Jerusalem.](http://digitalgastronomy.co/)
+Science and Engineering in The Hebrew University of Jerusalem,](http://digitalgastronomy.co/)
 in research of 'Digital Gastronomy'. 
 
 This app is an experiment to personalize recipe by a digital agent and this app is proof 
-for that concept
+for that concept.
 
 
 
 # Description
 This app will analyze your recipe.
-During the process you will tell the app what dish 
-you wish (Lettuce warp \ Stir Fry \ Carrot cake) to eat, and what type of reicpe you 
-prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visualization and feeling how the  recipe's ingredinets impact on the:
-* Aroma intensity status
-* Taste intensity status
+During the process you will choice in the app what dish 
+you wish to eat (Lettuce warp \ Stir Fry \ Carrot cake), and what type of recipe you 
+prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visualization
+ how the recipe's ingredients impact on:
+* Aroma intensity
+* Taste intensity
 * Environmental Impact
 
 # References
 ###  Aroma data - flavor DB
 [flavorDB web](https://cosylab.iiitd.edu.in/flavordb/search)
 
-note: The code for analyze the aroma data can be found here: 
-https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
+Note: 
+The code for analyze the aroma data can be found here: https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
 
 ###  Environmental Impact - In Science
 * [info](https://science.sciencemag.org/content/363/6429/eaaw9908)
