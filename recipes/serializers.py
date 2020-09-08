@@ -1,7 +1,10 @@
+from math import ceil
 from pprint import pprint
 
 from rest_framework import serializers
 from .models import *
+
+WATER_FACTOR = 0.1
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -92,7 +95,7 @@ class SingleRecipeSerializer(serializers.ModelSerializer):
 
 
 def noramlize_value(val, min, max):
-    return (val * (max - min) + min)
+    return ((val * (max - min)) + min)
 
 
 def env_impact_score(env_score, ing_factor, convertor):
@@ -103,10 +106,14 @@ class MetaRecipeSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField()
     # land_use_avg = serializers.SerializerMethodField()
     env_impact_avg = serializers.SerializerMethodField()
+    env_impact_max = serializers.SerializerMethodField()
+    aroma_max = serializers.SerializerMethodField()
+    taste_max = serializers.SerializerMethodField()
 
     class Meta:
         model = MetaRecipe
-        fields = ('id', 'name', 'recipes', "env_impact_avg")
+        fields = ('id', 'name', 'recipes', "env_impact_avg", 'env_impact_max',
+                  'aroma_max' , 'taste_max')
 
     def get_recipes(self, metarecipe):
         single_recipes_by_metarecipe = SingleRecipe.objects.filter(metarecipe=metarecipe.id)
@@ -140,17 +147,87 @@ class MetaRecipeSerializer(serializers.ModelSerializer):
                                                                           factor,
                                                                           convertor) * avg_factor
                     metarecipe_env_impact_avg['eutrophy'] += (env_impact_score(env_impact['eutrophying_emissions'],
-                                                                              factor,
-                                                                              convertor) * avg_factor)
+                                                                               factor,
+                                                                               convertor) * avg_factor)
                     metarecipe_env_impact_avg['freshwater'] += (env_impact_score(env_impact['freshwater_withdrawals'],
-                                                                                factor,
-                                                                                convertor) * avg_factor * 0.1)
+                                                                                 factor,
+                                                                                 convertor) * avg_factor * WATER_FACTOR)
 
         # round values
-        for  key , val in metarecipe_env_impact_avg.items():
-            metarecipe_env_impact_avg[key] = round(val,2)
+        for key, val in metarecipe_env_impact_avg.items():
+            metarecipe_env_impact_avg[key] = round(val, 2)
 
         return metarecipe_env_impact_avg
+
+    def get_env_impact_max(self, metarecipe):
+        single_recipes_by_metarecipe = self.get_recipes(metarecipe)
+        max_env = 0
+
+        for recipe in single_recipes_by_metarecipe:
+            recipe_count = 0
+            #  score for each scale by ingredient
+            for ing in recipe['ingredients']:
+                val = ing['value']
+                factor = noramlize_value(val, ing['min'], ing['max'])
+                env_impact = ing['env_impact']
+                if val > 0:
+                    convertor = ing['unit_convertor_g']
+                    recipe_count += env_impact_score(env_impact['freshwater_withdrawals'], factor,
+                                                     convertor) * WATER_FACTOR
+            # print(metarecipe.name, recipe['diet'], recipe_count)
+            if recipe_count > max_env:
+                max_env = ceil(recipe_count)
+        return max_env
+
+    def get_aroma_max(self, metarecipe):
+        single_recipes_by_metarecipe = self.get_recipes(metarecipe)
+        max_aroma = 0
+
+        for recipe in single_recipes_by_metarecipe:
+            avg_factor = 1 / len(recipe['ingredients'])
+            print(len(recipe['ingredients']))
+            aromas_avg = {}
+            #  score for each scale by ingredient
+            for ing in recipe['ingredients']:
+                factor = noramlize_value(ing['value'], ing['min'], ing['max'])
+                aroma_intensities = {k: v for k, v in ing['aromas'].items() if
+                                   not k.startswith(('entity_id', 'entity_alias_readable'))}
+                for category, intensity in aroma_intensities.items():
+                    if category in aromas_avg:
+                        aromas_avg[category] += (intensity * factor )
+                    else:
+                        aromas_avg[category] = (intensity * factor )
+
+            recipe_aroma = max(aromas_avg.values())
+            if recipe_aroma > max_aroma:
+                max_aroma = recipe_aroma * avg_factor
+
+        return ceil(max_aroma)
+
+    def get_taste_max(self, metarecipe):
+        single_recipes_by_metarecipe = self.get_recipes(metarecipe)
+        max_taste = 0
+
+        for recipe in single_recipes_by_metarecipe:
+            avg_factor = 1 / len(recipe['ingredients'])
+            print(len(recipe['ingredients']))
+            tastes_avg = {}
+            #  score for each scale by ingredient
+            for ing in recipe['ingredients']:
+                factor = noramlize_value(ing['value'], ing['min'], ing['max'])
+                taste_intensities = {k: v for k, v in ing['tastes'].items() if
+                                     not k.startswith(('entity_id', 'taste_name'))}
+                for category, intensity in taste_intensities.items():
+                    if category in tastes_avg:
+                        tastes_avg[category] += (intensity * 0.1 * factor)
+                    else:
+                        tastes_avg[category] = (intensity * 0.1 * factor)
+
+            recipe_taste = max(tastes_avg.values())
+            if recipe_taste > max_taste:
+                max_taste = recipe_taste * avg_factor
+
+        return ceil(max_taste)
 
 
 class EnvironmentalImpactSerializer(serializers.ModelSerializer):
@@ -159,84 +236,6 @@ class EnvironmentalImpactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class IngOfRecipeSerializer(serializers.ModelSerializer):
-#     aromas = serializers.SerializerMethodField()
-#     land_use = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         model = IngredientOfRecipe
-#         fields = ('id', 'name', 'entity_id', 'min', 'max', 'kosher_value', 'vegan_value', 'ketogenic_value',
-#                   'recipe', 'aromas', 'land_use')
-#         extra_kwargs = {
-#             # 'house': {'write_only': True},
-#             'recipe': {'write_only': True},
-#         }
-#
-#     def get_aromas(self, ing):
-#         aroma = Aroma.objects.filter(entity_id=ing.entity_id).only('entity_id', 'entity_alias_readable').values()
-#         return aroma[0]
-#
-#     def get_land_use(self, ing):
-#         land_use = LandUse.objects.filter(entity_id=ing.entity_id).values()
-#         return land_use[0]
-
-#
-# class RecipeSerializer(serializers.ModelSerializer):
-#     # ingredients = IngOfRecipeSerializer(many=True)
-#     # recipe_ing = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         model = Recipe
-#         fields = "__all__"
-#         # fields = ('url', 'id', 'diet', 'name', 'category')
-#         fields = ('id', 'diet', 'name', 'category', 'recipe_ing')
-#         # extra_kwargs = {
-#         #     'ingredients': {'read_only': True}
-#     # }
-#
-# def get_recipe_ing(self, recipe):
-#     ings = IngredientOfRecipe.objects.filter(recipe=recipe.id)
-#     return IngOfRecipeSerializer(ings, many=True).data
-
-#     # depth = 1
-#
-# def create(self, validated_data):
-#     ingredients = validated_data.pop('ingredients')
-#     recipe = Recipe.objects.create(**validated_data)
-#     for ing in ingredients:
-#         IngredientOfRecipe.objects.create(**ing, recipe=recipe)
-#     return recipe
-
-
-#
-# class LandUseSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = LandUse
-#         fields = '__all__'
-
-#
-# class TestRecipeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = TestRecipe
-#         fields = '__all__'
-
-#
-# class RecipeIngsSerializer(serializers.Serializer):
-#     # recipe_ings = serializers.SerializerMethodField()
-#     # recipe_ings = serializers.PrimaryKeyRelatedField(queryset=IngOfRecipe.objects.all())
-#
-#     # class Meta:
-#     #     fields = '__all__'
-#
-#     rate = serializers.IntegerField()
-#     min = serializers.IntegerField(default=0)
-#     max = serializers.IntegerField(default=0)
-#
-#     def get_recipe_ings(self, instance):
-#         ings = IngredientOfRecipe.object.filter(recipe=instance)
-#         return IngOfRecipeSerializer(ings, many=True)
-
-#
 class RecipeNamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = MetaRecipe

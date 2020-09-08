@@ -2,7 +2,7 @@
 
 You can try it yourself in [netlify](https://tender-tesla-6d5acb.netlify.app/)
 
-You can view the data schema in [heroku](https://dg-backend.herokuapp.com/)
+You can view the data in [heroku](https://dg-backend.herokuapp.com/)
 
 The frontend code [you can find here](https://github.com/noamdom/dg-app/tree/frontend)
 
@@ -42,12 +42,12 @@ The code to analyze the aroma data can be found here: https://github.com/ShimonB
 * [Article](https://josephpoore.com/Science%20360%206392%20987%20-%20Accepted%20Manuscript.pdf)
 * [Supplementary Materials](https://science.sciencemag.org/content/suppl/2018/05/30/360.6392.987.DC1)
 
-### 
+ 
 
 # Thanks
 * Shimon Heimowitz , Prof. Amit Zoran - Advisers
 * Emiliano Arencibia Gonzalez 
-* Vered Domovich & Eylam sclar - UI design
+* Vered Domovich & Eilam Sklar - UI design
 
 
 
