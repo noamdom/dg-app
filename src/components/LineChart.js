@@ -16,7 +16,7 @@ function convertTitles(titlesArr) {
     return newTitlesArr;
 }
 
-export default function LineByData({ dynamicEnvImpact, envImpactAvg }) {
+export default function LineByData({ dynamicEnvImpact, envImpactAvg , suggestedMax }) {
 
     const [chartData, setChartData] = useState({});
 
@@ -79,6 +79,12 @@ export default function LineByData({ dynamicEnvImpact, envImpactAvg }) {
                             gridLines: {
                                 color: '#2f1544',
                                 lineWidth: 0.5
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                suggestedMax: suggestedMax,
+                                min: 0
                             }
                         }],
                     }

@@ -70,14 +70,15 @@ export default function Control(props) {
      */
     const calculateAromasAvarge = () => {
         let size = Object.keys(ingredients).length;
+        
         if (size > 0) {
 
             const aromasAvg = {};
-            const avgFactor = 1 / size;
             const flatIngs = Object.values(ingredients).flat()
+            const avgFactor = 1 / flatIngs.length;
 
             flatIngs.forEach(ing => {
-                if (ing.value > 0) {  // ing == 0 <=> zero the equation
+                // if (ing.value > 0) {  // ing == 0 <=> zero the equation
                     let factor = helper.noramlizeValue(ing.value, ing.min, ing.max);
 
                     // filter out none arome data:
@@ -86,12 +87,12 @@ export default function Control(props) {
                     // analyze avg data
                     for (const [key, val] of Object.entries(aromaVals)) {
                         if (key in aromasAvg) {
-                            aromasAvg[key] += (helper.computeAromaScore(val, factor) * avgFactor);
+                            aromasAvg[key] += helper.computeAromaScore(val, factor) * avgFactor;
                         } else {
-                            aromasAvg[key] = helper.computeAromaScore(val, factor) * avgFactor
+                            aromasAvg[key] = helper.computeAromaScore(val, factor) * avgFactor;
                         }
                     }
-                }
+                // }
             });
 
             helper.roundDict(aromasAvg);
@@ -111,10 +112,11 @@ export default function Control(props) {
         if (size > 0) {
 
             const tasteAvg = {};
-            const avgFactor = 1 / size;
             const flatIngs = Object.values(ingredients).flat()
+            const avgFactor = 1 / flatIngs.length;
+
             flatIngs.forEach(ing => {
-                if (ing.value > 0) { // ing == 0 <=> zero the equation
+                // if (ing.value > 0) { // ing == 0 <=> zero the equation
                     let factor = helper.noramlizeValue(ing.value, ing.min, ing.max);
 
                     // filter out none arome data:
@@ -128,7 +130,7 @@ export default function Control(props) {
                             tasteAvg[key] = helper.computeTasteScore(val / 10, factor) * avgFactor
                         }
                     }
-                }
+                // }
             });
 
             helper.roundDict(tasteAvg);
@@ -143,7 +145,7 @@ export default function Control(props) {
      * For each ingredient the function calculate the Environmental Impact by catogory (land_use, ghg , etc.) and the avarage between 
      * all the recipe ingredient . It's build a dictionary with the final catogry avg value for the  Environmental Impact chart
      */
-    const calculateEnvImpactAvarge = () => {
+    const calculateEnvImpact = () => {
         if (envImpactAvgMetaReicpe) {
 
 
@@ -156,10 +158,10 @@ export default function Control(props) {
                 "freshwater": 0,
             }
 
-            const flat_ings = Object.values(ingredients).flat()
+            const flatIngs = Object.values(ingredients).flat()
             // culclate by new value
-            flat_ings.forEach(ing => {
-                if (ing.value > 0) {
+            flatIngs.forEach(ing => {
+                // if (ing.value > 0) {
                     let factor = helper.noramlizeValue(ing.value, ing.min, ing.max);
                     let envImpactData = ing.env_impact;
 
@@ -168,7 +170,7 @@ export default function Control(props) {
                     newEnvImpact['acid'] += helper.computeEnvImpactScore(envImpactData.acidifying_emissions, factor, ing.unit_convertor_g);
                     newEnvImpact['eutrophy'] += helper.computeEnvImpactScore(envImpactData.eutrophying_emissions, factor, ing.unit_convertor_g);
                     newEnvImpact['freshwater'] += (helper.computeEnvImpactScore(envImpactData.freshwater_withdrawals, factor, ing.unit_convertor_g) * WATER_FACTOR);
-                }
+                // }
             });
 
             // round values:
@@ -215,7 +217,7 @@ export default function Control(props) {
     useEffect(() => {
         calculateAromasAvarge();
         calculateTasteAvarge();
-        calculateEnvImpactAvarge();
+        calculateEnvImpact();
     }, [ingredients, metaRecipe, envImpactAvgMetaReicpe])
 
 
@@ -236,6 +238,7 @@ export default function Control(props) {
  * @param {string} cat = category name
  */
     const handleIngValChange = (val, id, cat) => {
+        
         let c = ingredients[cat].map(ing => {
             return (
                 ing.id === id
@@ -356,7 +359,7 @@ export default function Control(props) {
 
                                         }}>Aroma{'\u00A0'}Intensity</div>
                                         <div className=" mx-0 px-0">
-                                            < RadarChart data={aromas} title={"Aroma Intensity"} />
+                                            < RadarChart data={aromas} title={"Aroma Intensity"} suggestedMax={metaRecipe.aroma_max * 1.5} />
                                         </div>
                                         <div className="col-12  text-center">
                                             <img className="" src={helper.aromaIndication(aromaScore)} style={{ height: "13vh", width: "13vh", }} alt='logo' />
@@ -373,7 +376,7 @@ export default function Control(props) {
                                     <div className="col-lg-3 text-center">
                                         <div className=" font-weight-bold my-2  text-center  align-self-strech my-title" >Taste{'\u00A0'}Intensity</div>
                                         <div className=" mx-0 px-0">
-                                            < RadarChart data={tastes} title={"Taste Intensity"} />
+                                            < RadarChart data={tastes} title={"Taste Intensity"} suggestedMax={metaRecipe.taste_max * 1.5}  />
                                         </div>
                                         <div className="col-12  text-center">
                                             <img className="" src={helper.tasteIndication(tasteScore)} style={{ height: "13vh", width: "13vh", }} alt='logo' />
@@ -393,6 +396,7 @@ export default function Control(props) {
                                             < LineChart
                                                 dynamicEnvImpact={envImpact}
                                                 envImpactAvg={envImpactAvgMetaReicpe}
+                                                suggestedMax = {metaRecipe.env_impact_max * 1.5}
                                             />
                                         </div>
                                         <div className="col-12  align-self-end text-center mt-2">

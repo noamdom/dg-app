@@ -76,10 +76,10 @@ export default function RadarByData(props) {
                             lineWidth: 0.5
 
                         },
-                        //  ticks: {
-                        //     display: false
-
-                        // }
+                        ticks: {
+                            min: 0,
+                            suggestedMax: props.suggestedMax
+                        }
                     }
                 }}
             />
