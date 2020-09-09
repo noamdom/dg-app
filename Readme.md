@@ -32,10 +32,8 @@ prefer (Kosher \ Vegan \ Ketogenic). In response the app will give you  a visual
 
 # References
 ###  Aroma data - flavor DB
-[flavorDB web](https://cosylab.iiitd.edu.in/flavordb/search)
-
-Note: 
-The code to analyze the aroma data can be found here: https://github.com/ShimonBezalel/dg-db/tree/aruma-profile 
+* [flavorDB web](https://cosylab.iiitd.edu.in/flavordb/search)
+* Note: The code to analyze the aroma data can be found [here](https://github.com/ShimonBezalel/dg-db/tree/aruma-profile) 
 
 ###  Environmental Impact - In Science
 * [Info](https://science.sciencemag.org/content/363/6429/eaaw9908)
@@ -46,7 +44,7 @@ The code to analyze the aroma data can be found here: https://github.com/ShimonB
 
 # Thanks
 * Shimon Heimowitz , Prof. Amit Zoran - Advisers
-* Emiliano Arencibia Gonzalez 
+* Emiliano Arencibia Gonzalez - Culinary consultant
 * Vered Domovich & Eilam Sklar - UI design
 
 
