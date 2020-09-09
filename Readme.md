@@ -8,6 +8,8 @@ The frontend code (React.js) [you can find here](https://github.com/noamdom/dg-a
 
 The backend code (Python - Django framework) [you can find here](https://github.com/noamdom/dg-app/tree/backend)
 
+All the formal documents [can be found here](https://github.com/noamdom/dg-app/tree/documents)
+
 
 #  Background
 This app is my final project of my BA studies, and it's a cooperation 
