@@ -1,14 +1,14 @@
 # Reicpe Analyzer App - Backend
 
-You can try it yourself in [netlify](https://tender-tesla-6d5acb.netlify.app/)
+You can try it yourself in [netlify](https://tender-tesla-6d5acb.netlify.app/).
 
-You can view the data in [heroku](https://dg-backend.herokuapp.com/)
+You can view the data in [heroku](https://dg-backend.herokuapp.com/).
 
-The frontend code (React.js) [you can find here](https://github.com/noamdom/dg-app/tree/frontend)
+The frontend code (React.js) [you can find here](https://github.com/noamdom/dg-app/tree/frontend).
 
-The backend code (Python - Django framework) [you can find here](https://github.com/noamdom/dg-app/tree/backend)
+The backend code (Python - Django framework) [you can find here](https://github.com/noamdom/dg-app/tree/backend).
 
-All the formal documents [can be found here](https://github.com/noamdom/dg-app/tree/documents)
+All the formal documents [can be found here](https://github.com/noamdom/dg-app/tree/documents).
 
 
 #  Background
